@@ -1,0 +1,127 @@
+# Faikout
+
+This integration connects Gladys to your **Daikin** air conditioners fitted
+with a [**Faikout**](https://www.faikin.au) module (formerly _Faikin_). The
+Faikout replaces the original Wi-Fi module and is driven **locally**, on your
+own network: no cloud, no account, no Internet needed.
+
+In Gladys, each air conditioner becomes a device with:
+
+- **power**, **mode** (auto, cooling, heating, dry, fan only), **set point**
+  and **fan speed**;
+- horizontal and vertical **swing**, and the **Econo**, **Powerful**,
+  **Comfort**, **Streamer** and **quiet outdoor unit** modes, when your unit
+  has them;
+- the readings: **room temperature**, **outside temperature**, **inlet** and
+  **refrigerant** temperatures, **humidity**, **power consumption**.
+
+The integration only creates what your air conditioner actually reports: a
+function your model lacks does not show up.
+
+## Before you start
+
+1. Fit the Faikout module in the air conditioner (see the
+   [Faikout setup manual](https://codeberg.org/RevK/ESP32-Faikout/src/branch/main/Manuals/Setup.md)).
+2. Join it to your Wi-Fi: on first start it opens its own access point, with a
+   setup page.
+3. Check that you can open its web page (`http://<module address>/`) from your
+   network and drive the air conditioner from it.
+4. **Give it a fixed IP address** (a DHCP reservation in your router). That is
+   the address Gladys will use.
+
+Gladys talks to the module the way its own web page does: keep the Faikout
+**web controls** on (`webcontrol`, on by default).
+
+## Configuration
+
+In **Integrations → Faikout → Configuration**:
+
+| Field                | Role                                                                                                                                           |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Faikout units**    | The address of each module, separated by commas. A name followed by `=` in front of the address names the device.                              |
+| **Refresh interval** | How often each air conditioner is read, in seconds (30 by default, 5 to 600). A change made with the remote shows in Gladys within this delay. |
+
+Example:
+
+```
+Living room=192.168.1.50, Bedroom=192.168.1.51, 192.168.1.52
+```
+
+- Without a name, the device takes the module's own name (its _hostname_).
+- A name ending in `.local` (e.g. `guestac.local`) is often **not resolved**
+  inside the integration container: prefer the IP address.
+- A port other than 80 is written `192.168.1.50:8080`.
+
+Then click **Test the connection**: for each unit, the message says whether it
+answers, its model, its protocol (S21, X50A…), its mode and the room
+temperature.
+
+Finally, open the integration's **Discovery** tab and create the devices it
+offers.
+
+## What each device badge means
+
+| Badge                  | Meaning                                                                        |
+| ---------------------- | ------------------------------------------------------------------------------ |
+| **Local**              | The Faikout answers, so does the air conditioner.                              |
+| **Local** + orange dot | The Faikout answers, but **not the air conditioner**: check the S21/X50 cable. |
+| **Unreachable**        | The Faikout does not answer: switched off, off the Wi-Fi, or a new address.    |
+
+## Scenes
+
+### Triggers
+
+| Trigger                                           | When                                                                                                                                                |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **An air conditioner goes offline or comes back** | The Faikout stops answering (reason `unreachable`), the air conditioner stops answering the Faikout (reason `aircon`), then when all answers again. |
+| **An air conditioner is changed outside Gladys**  | Power, mode, set point or fan changed with the IR remote, the Faikout web page or a Faikout timer. Never by Gladys itself.                          |
+| **An air conditioner starts or ends defrosting**  | While heating in the cold, the outdoor unit stops for a few minutes to melt its frost.                                                              |
+
+Each trigger can be filtered by air conditioner, and by state (or by what
+changed). The values are available in the scene, e.g.
+`{{triggerEvent.data.mode}}` or `{{triggerEvent.data.temperature}}`.
+
+Changes made by **Faikout auto** (which moves the set point and the mode by
+itself) do not fire "changed outside Gladys".
+
+### Actions
+
+| Action                      | Role                                                                                                                              |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Set an air conditioner**  | Power, mode, set point and fan in one go. A field left empty keeps its value.                                                     |
+| **Set Faikout auto**        | The Faikout heats or cools by itself to keep the room between _target − range_ and _target + range_. A range of 0 stops it.       |
+| **Read an air conditioner** | A fresh reading: online, power, mode, set point, room and outside temperature, humidity. Never fails: test the **Online** output. |
+
+Their outputs can be used by the next actions of the scene (conditions,
+messages…).
+
+For a single command (switch on, change the set point), Gladys' standard
+**Control a device** action works too.
+
+## Dashboard widgets
+
+- **Faikout air conditioner**: one unit. Live temperatures (room, set point,
+  outside, power), link, mode, fan, compressor, Faikout auto, defrost, and
+  **On**, **Off**, **Refresh** buttons. Pick the unit in the widget settings.
+- **Faikout overview**: all your air conditioners on one card, with their mode
+  and room temperature.
+
+## Troubleshooting
+
+- **"no answer"** in the connection test: open `http://<address>/` from a
+  computer on the same network as Gladys. If the page does not open, the
+  problem is the network (address, Wi-Fi, VLAN), not Gladys.
+- **A command fails with "did not apply"**: the air conditioner does not have
+  that function, or the Faikout cannot drive it.
+- **Faikout auto does not apply**: the Faikout is driven by an external
+  controller (EnvMon, MQTT `control` command), which takes priority.
+- **A device stays unreachable after an address change**: put the new address
+  in **Faikout units**. The Gladys device is tied to the module's MAC address:
+  it keeps its history and its scenes.
+
+## Privacy
+
+Everything stays on your network: the integration only talks to the addresses
+you give it, over local HTTP and WebSocket. It only keeps, in its `/data`
+volume, the MAC address, name, model and feature list of each unit, to find
+its devices again even when an air conditioner is off at start-up.

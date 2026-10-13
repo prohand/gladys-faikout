@@ -1,0 +1,100 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { FaikoutClient, parseLegacy } from '../src/faikout/client.js';
+import { createFakeNetwork } from './helpers/fakeFaikout.js';
+
+test('a read sends an empty frame and resolves the status', async () => {
+  const net = createFakeNetwork();
+  const unit = net.add('10.0.0.5');
+  const client = net.clientFactory('10.0.0.5');
+  try {
+    const status = await client.request();
+    assert.equal(status.mode, 'H');
+    assert.deepEqual(unit.frames, ['']);
+  } finally {
+    client.close();
+  }
+});
+
+test('commands go one at a time, each answer to its own request', async () => {
+  const net = createFakeNetwork();
+  const unit = net.add('10.0.0.5');
+  const client = net.clientFactory('10.0.0.5');
+  try {
+    const [first, second] = await Promise.all([
+      client.request({ mode: 'C' }),
+      client.request({ temp: 24 }),
+    ]);
+    assert.equal(first.mode, 'C');
+    assert.equal(first.temp, 22, 'the first answer predates the second frame');
+    assert.equal(second.temp, 24);
+    assert.deepEqual(unit.frames, ['{"mode":"C"}', '{"temp":24}']);
+    assert.equal(net.sockets.size, 1, 'one socket serves every exchange');
+  } finally {
+    client.close();
+  }
+});
+
+test('a refused connection rejects, and the next request tries again', async () => {
+  const net = createFakeNetwork();
+  const unit = net.add('10.0.0.5');
+  unit.reachable = false;
+  const client = net.clientFactory('10.0.0.5');
+  try {
+    await assert.rejects(client.request(), /refused|closed/);
+    unit.reachable = true;
+    assert.equal((await client.request()).power, true);
+  } finally {
+    client.close();
+  }
+});
+
+test('a unit that stops answering times out, and a fresh socket is opened', async () => {
+  const net = createFakeNetwork();
+  const unit = net.add('10.0.0.5');
+  const client = net.clientFactory('10.0.0.5');
+  try {
+    await client.request();
+    unit.reachable = 'mute';
+    await assert.rejects(client.request(), /No answer within/);
+    unit.reachable = true;
+    assert.equal((await client.request()).power, true);
+    assert.equal(net.sockets.size, 1, 'the silent socket was closed');
+  } finally {
+    client.close();
+  }
+});
+
+test('basic_info gives the MAC address', async () => {
+  const net = createFakeNetwork();
+  net.add('10.0.0.5');
+  const client = net.clientFactory('10.0.0.5');
+  const info = await client.basicInfo();
+  assert.equal(info.mac, '30AEA4A1B2C3');
+  assert.equal(info.name, 'GuestAC');
+  await assert.rejects(net.clientFactory('10.0.0.9').basicInfo(), /fetch failed/);
+});
+
+test('a closed client refuses new requests', async () => {
+  const net = createFakeNetwork();
+  net.add('10.0.0.5');
+  const client = net.clientFactory('10.0.0.5');
+  client.close();
+  await assert.rejects(client.request(), /closed/);
+});
+
+test('Daikin-style answers are decoded', () => {
+  assert.deepEqual(parseLegacy('ret=OK,name=Living%20room,mac=AABB,empty=\n'), {
+    ret: 'OK',
+    name: 'Living room',
+    mac: 'AABB',
+    empty: '',
+  });
+  assert.deepEqual(parseLegacy('ret=OK,bad=%E0'), { ret: 'OK', bad: '%E0' });
+});
+
+test('the default client uses the global WebSocket and fetch of Node', () => {
+  const client = new FaikoutClient('10.0.0.5');
+  assert.equal(client.WebSocket, globalThis.WebSocket);
+  assert.equal(client.fetch, globalThis.fetch);
+});
