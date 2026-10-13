@@ -84,6 +84,14 @@ const control = (fromFaikout, toFaikout) => ({
   toFaikout: (value) => toFaikout[Number(value)],
 });
 
+// Faikout flaps only swing or stay put: Gladys would otherwise offer five fixed
+// positions the unit refuses (AC_SWING_HORIZONTAL / AC_SWING_VERTICAL: OFF 0,
+// SWING 1). The core translates the labels from the value.
+const SWING_OPTIONS = [
+  { value: 0, label: 'Off', sort_order: 0 },
+  { value: 1, label: 'Swing', sort_order: 1 },
+];
+
 const switchFeature = (key, name) => ({
   key,
   name,
@@ -181,6 +189,7 @@ export const FEATURES = [
     read_only: false,
     has_feedback: true,
     keep_history: false,
+    supported_options: SWING_OPTIONS,
     ...boolean,
   },
   {
@@ -193,6 +202,7 @@ export const FEATURES = [
     read_only: false,
     has_feedback: true,
     keep_history: false,
+    supported_options: SWING_OPTIONS,
     ...boolean,
   },
   switchFeature('econo', 'Econo'),

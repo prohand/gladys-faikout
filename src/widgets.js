@@ -3,10 +3,11 @@
 //
 // Declared in the manifest `widgets`, registered by src/app.js. The content is
 // declarative (tiles, status rows, buttons): the core renders it.
-//   - `unit`: one air conditioner. Live tiles bound to its features (they
-//     follow the published states with no refresh), status rows for what no
-//     feature carries (link, mode, fan, Faikout auto, defrost), On/Off buttons
-//     bound to the power feature, and a Refresh button.
+//   - `unit`: one air conditioner. Live tiles and a 24 h temperature chart
+//     bound to its features (they follow the published states with no
+//     refresh), status rows (state, mode, fan, flaps, comfort modes, Faikout
+//     auto and defrost while they run), an On or Off button bound to the power
+//     feature, and a Refresh button.
 //   - `overview`: one row per configured unit.
 // The unit manager nudges both whenever what they show changes.
 // -----------------------------------------------------------------------------
@@ -36,15 +37,28 @@ const LINK_COLORS = {
 };
 
 // Live tiles, in order of interest. A widget holds 8 components: 4 tiles, the
-// status rows and 3 buttons.
+// temperature chart, the status rows and 2 buttons.
 const TILES = [
   { key: 'home', label: { en: 'Room', fr: 'Pièce' }, icon: 'thermometer' },
   { key: 'temp', label: { en: 'Set point', fr: 'Consigne' }, icon: 'target' },
-  { key: 'outside', label: { en: 'Outside', fr: 'Extérieur' }, icon: 'cloud' },
+  { key: 'outside', label: { en: 'Outside', fr: 'Extérieur' }, icon: 'sun' },
   { key: 'consumption', label: { en: 'Power', fr: 'Puissance' }, icon: 'zap' },
   { key: 'hum', label: { en: 'Humidity', fr: 'Humidité' }, icon: 'droplet' },
 ];
 const MAX_TILES = 4;
+
+// The curves of the chart, drawn from the history Gladys keeps of them.
+const CHART_FEATURES = ['home', 'temp', 'outside'];
+
+// Comfort options, in the order of the Faikout page. Short names: they share
+// one status row (value ≤ 40 characters).
+const COMFORT_LABELS = {
+  econo: { en: 'Econo', fr: 'Éco' },
+  powerful: { en: 'Powerful', fr: 'Puissant' },
+  comfort: { en: 'Comfort', fr: 'Confort' },
+  quiet: { en: 'Quiet', fr: 'Silence' },
+  streamer: { en: 'Streamer', fr: 'Streamer' },
+};
 
 function modeText(status) {
   if (status?.power === false) {
@@ -53,51 +67,85 @@ function modeText(status) {
   return MODE_LABELS[status?.mode] ?? { en: '–', fr: '–' };
 }
 
-function statusRows(manager, unit, units) {
+function stateRow(unit) {
+  const row = { label: { en: 'State', fr: 'État' }, icon: 'circle' };
+  if (unit.link !== LINK.ONLINE || !unit.status) {
+    return { ...row, value: LINK_LABELS[unit.link], color: LINK_COLORS[unit.link] };
+  }
+  return unit.status.power
+    ? { ...row, value: { en: 'Running', fr: 'En marche' }, color: WIDGET_COLORS.SUCCESS }
+    : { ...row, value: { en: 'Off', fr: 'Arrêtée' }, color: WIDGET_COLORS.NEUTRAL };
+}
+
+function swingText(status) {
+  const { swingh, swingv } = status;
+  if (swingh && swingv) {
+    return { en: 'Both ways', fr: 'Les deux' };
+  }
+  if (swingv) {
+    return { en: 'Vertical', fr: 'Verticaux' };
+  }
+  if (swingh) {
+    return { en: 'Horizontal', fr: 'Horizontaux' };
+  }
+  return { en: 'Fixed', fr: 'Fixes' };
+}
+
+function statusRows(unit, units) {
   const status = unit.status ?? {};
-  const rows = [
-    {
-      // The unit's name heads the rows: the card title is the widget's.
-      label: manager.displayName(unit).slice(0, 40),
-      icon: unit.link === LINK.UNREACHABLE ? 'wifi-off' : 'wifi',
-      value: LINK_LABELS[unit.link],
-      color: LINK_COLORS[unit.link],
-    },
-  ];
+  const rows = [stateRow(unit)];
   if (unit.link === LINK.UNREACHABLE || !unit.status) {
     return rows;
   }
-  rows.push({
-    label: { en: 'Mode', fr: 'Mode' },
-    icon: 'power',
-    value: modeText(status),
-    color: status.power ? WIDGET_COLORS.PRIMARY : WIDGET_COLORS.NEUTRAL,
-  });
+  const active = status.power ? WIDGET_COLORS.PRIMARY : WIDGET_COLORS.NEUTRAL;
+  if (MODE_LABELS[status.mode]) {
+    rows.push({
+      label: { en: 'Mode', fr: 'Mode' },
+      icon: 'sliders',
+      value: MODE_LABELS[status.mode],
+      color: active,
+    });
+  }
   if (FAN_LABELS[status.fan]) {
     rows.push({
       label: { en: 'Fan', fr: 'Ventilation' },
       icon: 'wind',
       value: FAN_LABELS[status.fan],
-      color: WIDGET_COLORS.NEUTRAL,
+      color: active,
     });
   }
-  if (typeof status.comp === 'number') {
+  if (typeof status.swingh === 'boolean' || typeof status.swingv === 'boolean') {
     rows.push({
-      label: { en: 'Compressor', fr: 'Compresseur' },
-      icon: 'activity',
-      value: status.comp,
-      color: status.comp > 0 ? WIDGET_COLORS.INFO : WIDGET_COLORS.NEUTRAL,
+      label: { en: 'Flaps', fr: 'Volets' },
+      icon: 'move',
+      value: swingText(status),
+      color: status.swingh || status.swingv ? active : WIDGET_COLORS.NEUTRAL,
     });
   }
-  if (typeof status.autor === 'number') {
-    const on = status.autor > 0;
+  const comfortKeys = Object.keys(COMFORT_LABELS).filter((key) => key in status);
+  if (comfortKeys.length > 0) {
+    const on = comfortKeys.filter((key) => status[key] === true);
+    rows.push({
+      label: { en: 'Comfort modes', fr: 'Modes confort' },
+      icon: 'star',
+      value:
+        on.length > 0
+          ? translate((language) =>
+              on
+                .map((key) => COMFORT_LABELS[key][language])
+                .join(', ')
+                .slice(0, 40),
+            )
+          : { en: 'None', fr: 'Aucun' },
+      color: on.length > 0 ? active : WIDGET_COLORS.NEUTRAL,
+    });
+  }
+  if (typeof status.autor === 'number' && status.autor > 0) {
     rows.push({
       label: { en: 'Faikout auto', fr: 'Faikout auto' },
-      icon: 'sliders',
-      value: on
-        ? `${formatTemperature(status.autot, units)} ± ${status.autor}`
-        : { en: 'Off', fr: 'Arrêt' },
-      color: on ? WIDGET_COLORS.PRIMARY : WIDGET_COLORS.NEUTRAL,
+      icon: 'crosshair',
+      value: `${formatTemperature(status.autot, units)} ± ${status.autor}`,
+      color: WIDGET_COLORS.PRIMARY,
     });
   }
   if (status.antifreeze) {
@@ -169,38 +217,35 @@ export const WIDGETS = {
           icon: tile.icon,
           device_feature: ids.feature(tile.key),
         }));
-      const buttons = [];
-      if (unit.capabilities.has('power')) {
-        // Bound to the power feature: the core runs it through onSetValue.
-        buttons.push(
-          {
-            type: 'button',
-            label: { en: 'On', fr: 'Allumer' },
-            icon: 'power',
-            style: 'primary',
-            device_feature: ids.feature('power'),
-            value: 1,
-          },
-          {
-            type: 'button',
-            label: { en: 'Off', fr: 'Éteindre' },
-            icon: 'power',
-            style: 'secondary',
-            device_feature: ids.feature('power'),
-            value: 0,
-          },
-        );
+      const components = [...tiles];
+      const curves = CHART_FEATURES.filter((key) => unit.capabilities.has(key));
+      if (curves.length > 0) {
+        components.push({
+          type: 'chart',
+          title: { en: 'Temperatures, 24 h', fr: 'Températures, 24 h' },
+          chart_type: 'line',
+          device_features: curves.map((key) => ids.feature(key)),
+          interval: 'last-day',
+        });
       }
-      buttons.push(refreshButton({ device: ids.device }));
-      return {
-        // Every change the rows show nudges the widget: the TTL is a safety net.
-        ttl_seconds: 300,
-        components: [
-          ...tiles,
-          { type: 'status', items: statusRows(manager, unit, units) },
-          ...buttons,
-        ],
-      };
+      components.push({ type: 'status', items: statusRows(unit, units) });
+      if (unit.capabilities.has('power')) {
+        // One button, the opposite of the current state (8 components at
+        // most). Bound to the power feature: the core runs it through
+        // onSetValue, and the power change nudges the widget.
+        const on = unit.status?.power === true;
+        components.push({
+          type: 'button',
+          label: on ? { en: 'Off', fr: 'Éteindre' } : { en: 'On', fr: 'Allumer' },
+          icon: 'power',
+          style: on ? 'secondary' : 'primary',
+          device_feature: ids.feature('power'),
+          value: on ? 0 : 1,
+        });
+      }
+      components.push(refreshButton({ device: ids.device }));
+      // Every change the rows show nudges the widget: the TTL is a safety net.
+      return { ttl_seconds: 300, components };
     },
 
     async action(manager, { actionKey, params }) {

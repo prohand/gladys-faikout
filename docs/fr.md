@@ -9,7 +9,7 @@ Dans Gladys, chaque climatisation devient un appareil avec :
 
 - **marche / arrêt**, **mode** (auto, froid, chauffage, déshumidification,
   ventilation), **consigne** et **vitesse de ventilation** ;
-- **balayage** horizontal et vertical, et les modes **Econo**, **Powerful**,
+- **balayage** horizontal et vertical (marche ou arrêt : pas de position fixe), et les modes **Econo**, **Powerful**,
   **Comfort**, **Streamer**, **unité extérieure silencieuse**, quand votre
   climatisation les a ;
 - les mesures : **température de la pièce**, **température extérieure**,
@@ -106,10 +106,12 @@ Pour une simple commande (allumer, changer la consigne), l'action standard
 
 ## Widgets du tableau de bord
 
-- **Climatisation Faikout** : une climatisation. Températures en direct
-  (pièce, consigne, extérieur, puissance), liaison, mode, ventilation,
-  compresseur, Faikout auto, dégivrage, et boutons **Allumer**, **Éteindre**,
-  **Actualiser**. Choisissez la climatisation dans les réglages du widget.
+- **Climatisation Faikout** : une climatisation. Tuiles en direct (pièce,
+  consigne, extérieur, puissance), une courbe des températures pièce, consigne
+  et extérieur sur 24 h, puis état, mode, ventilation, volets, modes confort,
+  et Faikout auto ou dégivrage quand ils tournent. Un bouton **Allumer** ou
+  **Éteindre** (l'inverse de l'état actuel) et **Actualiser**. Choisissez la
+  climatisation dans les réglages du widget.
 - **Vue d'ensemble Faikout** : toutes vos climatisations sur une carte, avec
   leur mode et la température de la pièce.
 

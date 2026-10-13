@@ -36,23 +36,68 @@ const getContent = async (gladys, key, settings = {}, units = 'metric') => {
   return ack.data.content;
 };
 
-test('the unit widget is rendered exactly as sent, tiles bound to published features', async () => {
+test('the unit widget is rendered exactly as sent, tiles and chart bound to published features', async () => {
   const { gladys, close } = await boot();
   try {
     const content = await getContent(gladys, UNIT_WIDGET, { device: DEVICE_ID });
     assert.deepEqual(validateWidgetContent(content), []);
+    assert.ok(content.components.length <= 8, 'within the content budget');
     const featureIds = new Set(
       gladys.fake.discoveredDevices.flatMap((d) => d.features.map((f) => f.external_id)),
     );
-    const bound = content.components.filter((c) => c.device_feature);
-    assert.equal(bound.length, 6, '4 live tiles and the On/Off buttons');
-    for (const component of bound) {
-      assert.ok(featureIds.has(component.device_feature), component.device_feature);
+    const tiles = content.components.filter((c) => c.type === 'value');
+    assert.deepEqual(
+      tiles.map((t) => t.label.fr),
+      ['Pièce', 'Consigne', 'Extérieur', 'Puissance'],
+    );
+    const chart = content.components.find((c) => c.type === 'chart');
+    assert.equal(chart.interval, 'last-day');
+    assert.deepEqual(
+      chart.device_features.map((id) => id.split(':').pop()),
+      ['home', 'temp', 'outside'],
+    );
+    const bound = [
+      ...content.components.filter((c) => c.device_feature).map((c) => c.device_feature),
+      ...chart.device_features,
+    ];
+    assert.equal(bound.length, 8, '4 live tiles, 3 curves and the power button');
+    for (const id of bound) {
+      assert.ok(featureIds.has(id), id);
     }
+    const power = content.components.find((c) => c.type === 'button' && c.device_feature);
+    assert.deepEqual([power.label.fr, power.value], ['Éteindre', 0]);
     const rows = content.components.find((c) => c.type === 'status').items;
-    assert.equal(rows[0].label, 'Salon');
-    assert.deepEqual(rows[0].value, { en: 'Online', fr: 'En ligne' });
-    assert.deepEqual(rows[1].value, { en: 'Heating', fr: 'Chauffage' });
+    assert.deepEqual(
+      rows.map((r) => [r.label.fr, r.value.fr]),
+      [
+        ['État', 'En marche'],
+        ['Mode', 'Chauffage'],
+        ['Ventilation', 'Auto'],
+        ['Volets', 'Verticaux'],
+        ['Modes confort', 'Aucun'],
+      ],
+    );
+  } finally {
+    await close();
+  }
+});
+
+test('the unit widget follows power, flaps and comfort modes', async () => {
+  const { gladys, manager, unit, close } = await boot();
+  try {
+    Object.assign(unit.status, { power: false, swingv: false, econo: true, quiet: true });
+    await manager.refreshAll();
+    const content = await getContent(gladys, UNIT_WIDGET, { device: DEVICE_ID });
+    assert.deepEqual(validateWidgetContent(content), []);
+    const rows = Object.fromEntries(
+      content.components.find((c) => c.type === 'status').items.map((r) => [r.label.en, r.value]),
+    );
+    assert.deepEqual(rows.State, { en: 'Off', fr: 'Arrêtée' });
+    assert.deepEqual(rows.Mode, { en: 'Heating', fr: 'Chauffage' });
+    assert.deepEqual(rows.Flaps, { en: 'Fixed', fr: 'Fixes' });
+    assert.deepEqual(rows['Comfort modes'], { en: 'Econo, Quiet', fr: 'Éco, Silence' });
+    const power = content.components.find((c) => c.type === 'button' && c.device_feature);
+    assert.deepEqual([power.label.fr, power.value], ['Allumer', 1]);
   } finally {
     await close();
   }
@@ -88,6 +133,7 @@ test('the unit widget without a unit, or with an unreachable one, stays valid', 
     assert.deepEqual(validateWidgetContent(down), []);
     const rows = down.components.find((c) => c.type === 'status').items;
     assert.equal(rows.length, 1);
+    assert.deepEqual(rows[0].value, { en: 'Unreachable', fr: 'Injoignable' });
     assert.equal(rows[0].color, 'danger');
   } finally {
     await close();

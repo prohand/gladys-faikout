@@ -9,7 +9,7 @@ In Gladys, each air conditioner becomes a device with:
 
 - **power**, **mode** (auto, cooling, heating, dry, fan only), **set point**
   and **fan speed**;
-- horizontal and vertical **swing**, and the **Econo**, **Powerful**,
+- horizontal and vertical **swing** (on or off: no fixed position), and the **Econo**, **Powerful**,
   **Comfort**, **Streamer** and **quiet outdoor unit** modes, when your unit
   has them;
 - the readings: **room temperature**, **outside temperature**, **inlet** and
@@ -104,9 +104,11 @@ For a single command (switch on, change the set point), Gladys' standard
 
 ## Dashboard widgets
 
-- **Faikout air conditioner**: one unit. Live temperatures (room, set point,
-  outside, power), link, mode, fan, compressor, Faikout auto, defrost, and
-  **On**, **Off**, **Refresh** buttons. Pick the unit in the widget settings.
+- **Faikout air conditioner**: one unit. Live tiles (room, set point, outside,
+  power), a chart of the room, set point and outside temperatures over 24 h,
+  then state, mode, fan, flaps, comfort modes, and Faikout auto or defrost
+  while they run. An **On** or **Off** button (the opposite of the current
+  state) and **Refresh**. Pick the unit in the widget settings.
 - **Faikout overview**: all your air conditioners on one card, with their mode
   and room temperature.
 

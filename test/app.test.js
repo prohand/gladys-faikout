@@ -73,6 +73,18 @@ test('one device per unit, named as configured, with the features its status car
       'hum',
       'consumption',
     ]);
+    // The flaps only swing or stay put: no fixed position offered.
+    for (const key of ['swingh', 'swingv']) {
+      const feature = device.features.find((f) => f.external_id.endsWith(`:${key}`));
+      assert.deepEqual(
+        feature.supported_options.map((o) => o.value),
+        [0, 1],
+      );
+    }
+    assert.equal(
+      device.features.find((f) => f.external_id.endsWith(':mode')).supported_options,
+      undefined,
+    );
     assert.deepEqual(gladys.fake.connectionStatus, { connected: true });
   } finally {
     await close();
