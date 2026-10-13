@@ -72,6 +72,7 @@ test('one device per unit, named as configured, with the features its status car
       'liquid',
       'hum',
       'consumption',
+      'Whoutside',
     ]);
     // The flaps only swing or stay put: no fixed position offered.
     for (const key of ['swingh', 'swingv']) {
@@ -244,7 +245,7 @@ test('a unit switched off at start-up keeps its device, from what was remembered
   const { gladys, close } = await boot({ net, store });
   try {
     assert.equal(gladys.fake.discoveredDevices[0]?.external_id, DEVICE_ID);
-    assert.equal(gladys.fake.discoveredDevices[0].features.length, 15);
+    assert.equal(gladys.fake.discoveredDevices[0].features.length, 16);
     assert.equal(gladys.fake.connectionStatus.connected, false);
   } finally {
     await close();

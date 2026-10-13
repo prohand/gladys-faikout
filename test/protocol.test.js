@@ -54,7 +54,21 @@ test('booleans become 0/1 and null readings are left out', () => {
   assert.equal(stateOf({ power: false }, 'power'), 0);
   assert.equal(stateOf({ home: 21.5 }, 'home'), 21.5);
   assert.equal(stateOf({ home: null }, 'home'), undefined);
-  assert.equal(statesOf(SAMPLE_STATUS, capabilitiesOf(SAMPLE_STATUS), featureId).length, 15);
+  assert.equal(statesOf(SAMPLE_STATUS, capabilitiesOf(SAMPLE_STATUS), featureId).length, 16);
+});
+
+test('the energy meter is a kWh index for Gladys energy monitoring', () => {
+  const meter = FEATURES.find((feature) => feature.key === 'Whoutside');
+  assert.equal(meter.category, 'energy-sensor');
+  assert.equal(meter.type, 'index');
+  assert.equal(meter.unit, 'kilowatt-hour');
+  // The firmware counts in Wh, by steps of 100 Wh.
+  assert.equal(stateOf({ Whoutside: 1234500 }, 'Whoutside'), 1234.5);
+  assert.equal(stateOf({ Whoutside: 0 }, 'Whoutside'), 0);
+  assert.equal(stateOf({ Whoutside: null }, 'Whoutside'), undefined);
+  assert.equal(stateOf({ Whoutside: -100 }, 'Whoutside'), undefined);
+  // Only one meter: the heating / cooling split would be counted twice.
+  assert.ok(!capabilitiesOf({ Whheating: 100, Whcooling: 200 }).length);
 });
 
 test('a Gladys value becomes the control frame the firmware reads', () => {
