@@ -6,6 +6,10 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Fan speed no longer offers Turbo in Gladys: Faikout fans have only auto, five speeds and quiet.
+
 ## [1.0.1] - 2026-10-13
 
 ### Added

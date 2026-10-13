@@ -82,6 +82,13 @@ test('one device per unit, named as configured, with the features its status car
         [0, 1],
       );
     }
+    // Auto, the five speeds and quiet: no Turbo, the unit has none.
+    assert.deepEqual(
+      device.features
+        .find((f) => f.external_id.endsWith(':fan'))
+        .supported_options.map((o) => o.value),
+      [0, 1, 2, 3, 4, 5, 6],
+    );
     assert.equal(
       device.features.find((f) => f.external_id.endsWith(':mode')).supported_options,
       undefined,
