@@ -292,6 +292,51 @@ test('Test the connection says what answered', async () => {
   }
 });
 
+test('a web password: told when missing, used once typed, at once', async () => {
+  const net = createFakeNetwork();
+  const unit = net.add('10.0.0.5');
+  unit.password = 's3cret';
+  const { gladys, close } = await boot({ net });
+  try {
+    assert.deepEqual(gladys.fake.discoveredDevices, []);
+    assert.equal(gladys.fake.connectionStatus.connected, false);
+    assert.match(gladys.fake.connectionStatus.message.en, /web password/);
+    const ack = await gladys.fake.action('test_connection');
+    assert.match(ack.data.message.en, /✗ Salon \(10\.0\.0\.5\): web password missing or wrong/);
+    assert.match(ack.data.message.fr, /mot de passe web absent ou faux/);
+
+    await gladys.fake.configUpdated({
+      units: 'Salon=10.0.0.5',
+      password: 's3cret',
+      poll_frequency: 600,
+    });
+    assert.equal(gladys.fake.discoveredDevices.length, 1);
+    assert.equal(gladys.fake.connectionStatus.connected, true);
+  } finally {
+    await close();
+  }
+});
+
+test('a changed web password drops the socket opened with the old one', async () => {
+  const { gladys, manager, unit, close } = await boot();
+  try {
+    const before = manager.units.get('10.0.0.5').client;
+    unit.password = 'new';
+    await gladys.fake.configUpdated({
+      units: 'Salon=10.0.0.5',
+      password: 'new',
+      poll_frequency: 600,
+    });
+    const after = manager.units.get('10.0.0.5').client;
+    assert.notEqual(after, before);
+    assert.equal(after.password, 'new');
+    await poll(manager);
+    assert.equal(manager.units.get('10.0.0.5').link, 'online');
+  } finally {
+    await close();
+  }
+});
+
 test('a scan request reads the units and publishes the devices again', async () => {
   const { gladys, unit, close } = await boot();
   try {

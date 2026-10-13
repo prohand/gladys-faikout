@@ -36,10 +36,11 @@ Gladys talks to the module the way its own web page does: keep the Faikout
 
 In **Integrations → Faikout → Configuration**:
 
-| Field                | Role                                                                                                                                           |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Faikout units**    | The address of each module, separated by commas. A name followed by `=` in front of the address names the device.                              |
-| **Refresh interval** | How often each air conditioner is read, in seconds (30 by default, 5 to 600). A change made with the remote shows in Gladys within this delay. |
+| Field                | Role                                                                                                                                                 |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Faikout units**    | The address of each module, separated by commas. A name followed by `=` in front of the address names the device.                                    |
+| **Web password**     | Only if a **web password** is set in the Faikout settings (the same one for every unit). Leave empty otherwise. The settings password is not needed. |
+| **Refresh interval** | How often each air conditioner is read, in seconds (30 by default, 5 to 600). A change made with the remote shows in Gladys within this delay.       |
 
 Example:
 
@@ -51,6 +52,9 @@ Living room=192.168.1.50, Bedroom=192.168.1.51, 192.168.1.52
 - A name ending in `.local` (e.g. `guestac.local`) is often **not resolved**
   inside the integration container: prefer the IP address.
 - A port other than 80 is written `192.168.1.50:8080`.
+- With a **web password**, Gladys sends it the way the Faikout page does once
+  logged in (a cookie, in clear on your network, as the Faikout settings
+  warn). The settings password stays unknown to Gladys: it never needs it.
 
 Then click **Test the connection**: for each unit, the message says whether it
 answers, its model, its protocol (S21, X50A…), its mode and the room
@@ -111,6 +115,8 @@ For a single command (switch on, change the set point), Gladys' standard
 - **"no answer"** in the connection test: open `http://<address>/` from a
   computer on the same network as Gladys. If the page does not open, the
   problem is the network (address, Wi-Fi, VLAN), not Gladys.
+- **"web password missing or wrong"**: a web password is set on the Faikout.
+  Type the same one in **Web password** (copy it from the Faikout settings).
 - **A command fails with "did not apply"**: the air conditioner does not have
   that function, or the Faikout cannot drive it.
 - **Faikout auto does not apply**: the Faikout is driven by an external
@@ -122,6 +128,7 @@ For a single command (switch on, change the set point), Gladys' standard
 ## Privacy
 
 Everything stays on your network: the integration only talks to the addresses
-you give it, over local HTTP and WebSocket. It only keeps, in its `/data`
+you give it, over local HTTP and WebSocket. The web password, if any, is kept by Gladys
+with the configuration and only sent to the units. It only keeps, in its `/data`
 volume, the MAC address, name, model and feature list of each unit, to find
 its devices again even when an air conditioner is off at start-up.

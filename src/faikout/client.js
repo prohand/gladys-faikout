@@ -9,11 +9,26 @@
 //   - `http://<host>/common/basic_info`: the Daikin-compatible page that gives
 //     the MAC address, the stable id of the unit in Gladys.
 //
-// No password: the firmware does not protect these endpoints (its settings
-// password only guards the settings page and the Faikout auto settings).
+// Web password: when one is set on the unit, both endpoints want the cookie its
+// login page gives (`Faikout=<password>`, compared as is), so it is sent on
+// every request. Without it the WebSocket handshake is dropped and the HTTP
+// pages answer, with a 200, a script that sends the browser to `/login`. The
+// settings password is never needed: it only guards the settings page and the
+// Faikout auto settings this integration does not touch.
 // -----------------------------------------------------------------------------
 
 const DEFAULT_TIMEOUT_MS = 5000;
+
+// The cookie name is the firmware's project name.
+const COOKIE_NAME = 'Faikout';
+
+/** The unit wants a web password, and the one configured (if any) is not it. */
+export class LoginRequiredError extends Error {
+  constructor() {
+    super('web password missing or wrong');
+    this.name = 'LoginRequiredError';
+  }
+}
 
 export class FaikoutClient {
   #socket = null;
@@ -28,9 +43,11 @@ export class FaikoutClient {
    * @param {typeof WebSocket} [options.WebSocket] WebSocket implementation (tests)
    * @param {typeof fetch} [options.fetch] fetch implementation (tests)
    * @param {number} [options.timeoutMs] answer deadline of one exchange
+   * @param {string} [options.password] web password of the unit, '' for none
    */
   constructor(host, options = {}) {
     this.host = host;
+    this.password = options.password ?? '';
     this.WebSocket = options.WebSocket ?? globalThis.WebSocket;
     this.fetch = options.fetch ?? globalThis.fetch;
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
@@ -55,12 +72,17 @@ export class FaikoutClient {
    */
   async basicInfo() {
     const response = await this.fetch(`http://${this.host}/common/basic_info`, {
+      headers: this.#headers(),
       signal: AbortSignal.timeout(this.timeoutMs),
     });
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
-    const info = parseLegacy(await response.text());
+    const text = await response.text();
+    if (isLoginPage(text)) {
+      throw new LoginRequiredError();
+    }
+    const info = parseLegacy(text);
     if (info.ret !== 'OK' || !info.mac) {
       throw new Error('Not a Faikout answer');
     }
@@ -76,7 +98,12 @@ export class FaikoutClient {
     if (this.#closed) {
       throw new Error('Connection closed');
     }
-    const socket = await this.#open();
+    let socket;
+    try {
+      socket = await this.#open();
+    } catch (err) {
+      throw err.refused ? await this.#explainRefusal(err) : err;
+    }
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
         // A unit that stopped answering on an open socket (Wi-Fi lost, reboot):
@@ -111,7 +138,7 @@ export class FaikoutClient {
     this.#opening = new Promise((resolve, reject) => {
       let socket;
       try {
-        socket = new this.WebSocket(`ws://${this.host}/status`);
+        socket = new this.WebSocket(`ws://${this.host}/status`, { headers: this.#headers() });
       } catch (err) {
         reject(err);
         return;
@@ -138,20 +165,42 @@ export class FaikoutClient {
         resolve(socket);
       });
       socket.addEventListener('message', (event) => this.#onMessage(event.data));
+      // The unit answered, but dropped the handshake: maybe a web password.
+      const refused = (message) => Object.assign(new Error(message), { refused: true });
       socket.addEventListener('error', () => {
-        fail(new Error('Connection refused or lost'));
+        fail(refused('Connection refused or lost'));
         if (this.#socket === socket) {
           this.#drop(new Error('Connection lost'));
         }
       });
       socket.addEventListener('close', () => {
-        fail(new Error('Connection closed by the unit'));
+        fail(refused('Connection closed by the unit'));
         if (this.#socket === socket) {
           this.#drop(new Error('Connection closed by the unit'));
         }
       });
     });
     return this.#opening;
+  }
+
+  #headers() {
+    return this.password ? { Cookie: `${COOKIE_NAME}=${this.password}` } : {};
+  }
+
+  /**
+   * A dropped handshake does not say why: ask an HTTP page, which does show
+   * the login redirect when the web password is the reason.
+   * @returns {Promise<Error>} the error to report
+   */
+  async #explainRefusal(err) {
+    try {
+      await this.basicInfo();
+    } catch (probeErr) {
+      if (probeErr instanceof LoginRequiredError) {
+        return probeErr;
+      }
+    }
+    return err;
   }
 
   #onMessage(data) {
@@ -183,6 +232,11 @@ export class FaikoutClient {
       }
     }
   }
+}
+
+/** The page every protected URL answers without the right cookie. */
+function isLoginPage(text) {
+  return /document\.location\s*=\s*["']\/login/.test(text);
 }
 
 /**

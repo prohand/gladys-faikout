@@ -60,8 +60,11 @@ test/helpers/fakeFaikout.js fake units, fake WebSocket and fetch: no network in 
 - The firmware **acks every frame, errors included**: a refused control only shows as an
   unchanged value, hence `frameApplied()` after each command.
 - **`/common/basic_info`** (Daikin-compatible) gives the MAC address, read once per host.
-- No password on these endpoints (the settings password only guards the settings page and
-  the `autoe`/`autob`/`autop`/`auto0`/`auto1` settings; `autot`/`autor` are always open).
+- **Web password** (optional, Faikout settings `cookie`): when set, every page and the
+  WebSocket want the cookie `Faikout=<password>` (raw value); without it the handshake is
+  dropped and HTTP pages answer 200 with a script to `/login` (`LoginRequiredError`). The
+  settings password is never needed: it only guards the settings page and the
+  `autoe`/`autob`/`autop`/`auto0`/`auto1` settings; `autot`/`autor` are always open.
 - Field letters: mode `FHCA456D` (digits unused), fan `A12345Q`. Status fields are absent
   when the unit does not report them, `null` when unknown for now.
 

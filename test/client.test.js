@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { FaikoutClient, parseLegacy } from '../src/faikout/client.js';
+import { FaikoutClient, LoginRequiredError, parseLegacy } from '../src/faikout/client.js';
 import { createFakeNetwork } from './helpers/fakeFaikout.js';
 
 test('a read sends an empty frame and resolves the status', async () => {
@@ -73,6 +73,52 @@ test('basic_info gives the MAC address', async () => {
   assert.equal(info.mac, '30AEA4A1B2C3');
   assert.equal(info.name, 'GuestAC');
   await assert.rejects(net.clientFactory('10.0.0.9').basicInfo(), /fetch failed/);
+});
+
+test('with a web password, the client sends the cookie of the login page', async () => {
+  const net = createFakeNetwork();
+  const unit = net.add('10.0.0.5');
+  unit.password = 's3cret';
+  const client = net.clientFactory('10.0.0.5', { password: 's3cret' });
+  try {
+    assert.equal((await client.basicInfo()).mac, '30AEA4A1B2C3');
+    assert.equal((await client.request()).power, true);
+    const socket = [...net.sockets][0];
+    assert.deepEqual(socket.headers, { Cookie: 'Faikout=s3cret' });
+  } finally {
+    client.close();
+  }
+});
+
+test('a missing or wrong web password is told apart from a unit off', async () => {
+  const net = createFakeNetwork();
+  const unit = net.add('10.0.0.5');
+  unit.password = 's3cret';
+  for (const password of ['', 'wrong']) {
+    const client = net.clientFactory('10.0.0.5', { password });
+    try {
+      await assert.rejects(client.basicInfo(), LoginRequiredError);
+      await assert.rejects(client.request(), /web password missing or wrong/);
+    } finally {
+      client.close();
+    }
+  }
+  unit.reachable = false;
+  const client = net.clientFactory('10.0.0.5', { password: 'wrong' });
+  await assert.rejects(client.request(), /Connection refused/);
+  client.close();
+});
+
+test('without a web password, no cookie is sent', async () => {
+  const net = createFakeNetwork();
+  net.add('10.0.0.5');
+  const client = net.clientFactory('10.0.0.5');
+  try {
+    await client.request();
+    assert.deepEqual([...net.sockets][0].headers, {});
+  } finally {
+    client.close();
+  }
 });
 
 test('a closed client refuses new requests', async () => {

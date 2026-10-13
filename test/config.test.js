@@ -44,4 +44,6 @@ test('normalizeConfig types and bounds the values', () => {
   assert.equal(normalizeConfig({ poll_frequency: 99999 }).poll_frequency, 600);
   assert.equal(normalizeConfig({ poll_frequency: 'x' }).poll_frequency, 30);
   assert.equal(normalizeConfig({ units: 42 }).units, '');
+  assert.equal(normalizeConfig({ password: ' s3cret\n' }).password, 's3cret');
+  assert.equal(normalizeConfig({ password: null }).password, '');
 });
