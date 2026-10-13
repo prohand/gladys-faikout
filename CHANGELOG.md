@@ -6,6 +6,8 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-13
+
 ### Added
 
 - German and Spanish translations (configuration screen, messages, widgets, documentation).
@@ -36,6 +38,7 @@ All notable changes to this integration are documented here. The format follows
 - Energy meter (kWh index) of the units that report it, for Gladys energy monitoring: 30-minute consumption and cost.
 - `SECURITY.md`, `CHANGELOG.md` and `CLAUDE.md`.
 
-[Unreleased]: https://github.com/prohand/gladys-faikout/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/prohand/gladys-faikout/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/prohand/gladys-faikout/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/prohand/gladys-faikout/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/prohand/gladys-faikout/releases/tag/v1.0.1
