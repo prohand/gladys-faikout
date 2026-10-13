@@ -242,7 +242,7 @@ export const WIDGETS = {
               text: {
                 en: 'Pick a Faikout air conditioner in the widget settings.',
                 fr: 'Choisissez une climatisation Faikout dans les réglages du widget.',
-                de: 'Wählen Sie in den Widget-Einstellungen ein Faikout-Klimagerät.',
+                de: 'Wähle in den Widget-Einstellungen ein Faikout-Klimagerät.',
                 es: 'Elija un aire acondicionado Faikout en la configuración del widget.',
               },
             },
@@ -322,7 +322,7 @@ export const WIDGETS = {
               text: {
                 en: 'No Faikout unit configured yet: add them in the integration configuration.',
                 fr: "Aucune unité Faikout configurée : ajoutez-les dans la configuration de l'intégration.",
-                de: 'Noch kein Faikout-Gerät konfiguriert: Fügen Sie sie in der Konfiguration der Integration hinzu.',
+                de: 'Noch kein Faikout-Gerät konfiguriert: Füge sie in der Konfiguration der Integration hinzu.',
                 es: 'Aún no hay ninguna unidad Faikout configurada: añádalas en la configuración de la integración.',
               },
             },

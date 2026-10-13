@@ -5,7 +5,7 @@
   "description": {
     "en": "Control your Daikin air conditioners locally through their Faikout module.",
     "fr": "Pilotez vos climatisations Daikin en local grâce à leur module Faikout.",
-    "de": "Steuern Sie Ihre Daikin-Klimageräte lokal über ihr Faikout-Modul.",
+    "de": "Steuere deine Daikin-Klimageräte lokal über ihr Faikout-Modul.",
     "es": "Controle sus aires acondicionados Daikin en local mediante su módulo Faikout."
   },
   "version": "1.0.2",
@@ -27,7 +27,7 @@
       "description": {
         "en": "Faikout replaces the Wi-Fi module of a Daikin air conditioner and is driven on your network, with no cloud. Join each unit to your Wi-Fi first (see the Faikout setup manual), keep its web controls on (they are by default), then list the units below. Gladys finds their features by itself.",
         "fr": "Faikout remplace le module Wi-Fi d'une climatisation Daikin et se pilote sur votre réseau, sans cloud. Connectez d'abord chaque unité à votre Wi-Fi (voir le manuel d'installation Faikout), laissez ses commandes web actives (elles le sont par défaut), puis listez les unités ci-dessous. Gladys trouve seul leurs fonctions.",
-        "de": "Faikout ersetzt das WLAN-Modul eines Daikin-Klimageräts und wird in Ihrem Netzwerk gesteuert, ohne Cloud. Verbinden Sie zuerst jedes Gerät mit Ihrem WLAN (siehe Faikout-Installationsanleitung), lassen Sie seine Websteuerung aktiviert (standardmäßig der Fall) und tragen Sie die Geräte dann unten ein. Gladys erkennt ihre Funktionen selbst.",
+        "de": "Faikout ersetzt das WLAN-Modul eines Daikin-Klimageräts und wird in deinem Netzwerk gesteuert, ohne Cloud. Verbinde zuerst jedes Gerät mit deinem WLAN (siehe Faikout-Installationsanleitung), lass seine Websteuerung aktiviert (standardmäßig der Fall) und trage die Geräte dann unten ein. Gladys erkennt ihre Funktionen selbst.",
         "es": "Faikout sustituye el módulo Wi-Fi de un aire acondicionado Daikin y se controla en su red, sin nube. Conecte primero cada unidad a su Wi-Fi (consulte el manual de instalación de Faikout), mantenga activados sus controles web (lo están por defecto) y después indique las unidades a continuación. Gladys detecta sus funciones por sí solo."
       },
       "links": [
@@ -72,7 +72,7 @@
       "description": {
         "en": "The address of each unit, separated by commas. Prefer a fixed IP address: names ending in .local are often not resolved inside the integration. Put a name and = in front to name the device, e.g. Living room=192.168.1.50.",
         "fr": "L'adresse de chaque unité, séparées par des virgules. Préférez une adresse IP fixe : les noms en .local ne sont souvent pas résolus dans l'intégration. Mettez un nom et = devant pour nommer l'appareil, par exemple Salon=192.168.1.50.",
-        "de": "Die Adresse jedes Geräts, durch Kommas getrennt. Verwenden Sie lieber eine feste IP-Adresse: Namen auf .local werden in der Integration oft nicht aufgelöst. Setzen Sie einen Namen und = davor, um das Gerät zu benennen, z. B. Wohnzimmer=192.168.1.50.",
+        "de": "Die Adresse jedes Geräts, durch Kommas getrennt. Verwende lieber eine feste IP-Adresse: Namen auf .local werden in der Integration oft nicht aufgelöst. Setze einen Namen und = davor, um das Gerät zu benennen, z. B. Wohnzimmer=192.168.1.50.",
         "es": "La dirección de cada unidad, separadas por comas. Es preferible una dirección IP fija: los nombres terminados en .local a menudo no se resuelven dentro de la integración. Ponga un nombre y = delante para nombrar el dispositivo, p. ej. Salón=192.168.1.50."
       },
       "placeholder": {
@@ -426,7 +426,7 @@
       "description": {
         "en": "Power, mode, set point and fan speed in one go. Leave a field empty to keep its value.",
         "fr": "Marche, mode, consigne et ventilation en une fois. Laissez un champ vide pour garder sa valeur.",
-        "de": "Ein/Aus, Modus, Sollwert und Lüftergeschwindigkeit auf einmal. Lassen Sie ein Feld leer, um seinen Wert zu behalten.",
+        "de": "Ein/Aus, Modus, Sollwert und Lüftergeschwindigkeit auf einmal. Lass ein Feld leer, um seinen Wert zu behalten.",
         "es": "Encendido, modo, consigna y velocidad del ventilador de una vez. Deje un campo vacío para conservar su valor."
       },
       "timeout_seconds": 20,
@@ -781,7 +781,7 @@
       "description": {
         "en": "A fresh reading for the next actions: temperatures, mode, power. Never fails: check Online.",
         "fr": "Une lecture fraîche pour les actions suivantes : températures, mode, marche. N'échoue jamais : vérifiez En ligne.",
-        "de": "Ein frischer Messwert für die nächsten Aktionen: Temperaturen, Modus, Ein/Aus. Schlägt nie fehl: prüfen Sie Online.",
+        "de": "Ein frischer Messwert für die nächsten Aktionen: Temperaturen, Modus, Ein/Aus. Schlägt nie fehl: prüfe Online.",
         "es": "Una lectura reciente para las siguientes acciones: temperaturas, modo, encendido. Nunca falla: compruebe En línea."
       },
       "timeout_seconds": 15,

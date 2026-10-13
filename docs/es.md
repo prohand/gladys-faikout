@@ -110,9 +110,10 @@ estándar **Establecer valor del dispositivo** de Gladys.
 Cuando el aire acondicionado comunica su contador de energía (campo de Faikout
 `Whoutside`, normalmente con el protocolo S21), el dispositivo obtiene una
 función **Contador de energía**, en kWh. Es un _índice_: Gladys calcula por sí
-solo el consumo cada 30 minutos y su coste, y los muestra en **Energía**.
+solo el consumo cada 30 minutos y su coste, y los muestra en la integración
+**Supervisión de energía**.
 
-- Una vez creado el dispositivo, abra **Energía** en Gladys: el aire
+- Una vez creado el dispositivo, abra **Integraciones → Supervisión de energía** en Gladys: el aire
   acondicionado aparece allí, vinculado a su contador principal si tiene uno.
 - El contador avanza en pasos de 100 Wh: en un periodo corto, el consumo
   aparece en escalones.
@@ -120,7 +121,7 @@ solo el consumo cada 30 minutos y su coste, y los muestra en **Energía**.
 - Un aire acondicionado que no comunica este contador no obtiene la función.
 - **Multi-split** (varias unidades interiores en una unidad exterior): el
   contador es el de la unidad exterior, así que cada Faikout puede comunicar el
-  mismo: compruebe en **Energía** que no se cuenta dos veces.
+  mismo: compruebe en **Supervisión de energía** que no se cuenta dos veces.
 
 ## Widgets del panel
 

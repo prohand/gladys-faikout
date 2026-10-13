@@ -109,9 +109,10 @@ Pour une simple commande (allumer, changer la consigne), l'action standard
 Quand la climatisation remonte son compteur d'énergie (champ `Whoutside` du
 Faikout, souvent avec le protocole S21), l'appareil a une fonction **Compteur
 d'énergie**, en kWh. C'est un _index_ : Gladys en déduit tout seul la
-consommation par demi-heure et son coût, et la montre dans **Énergie**.
+consommation par demi-heure et son coût, et la montre dans l'intégration
+**Suivi de l'énergie**.
 
-- Après la création de l'appareil, ouvrez **Énergie** dans Gladys : la
+- Après la création de l'appareil, ouvrez **Intégrations → Suivi de l'énergie** dans Gladys : la
   climatisation y apparaît, rattachée à votre compteur principal si vous en
   avez un.
 - Le compteur avance par pas de 100 Wh : sur une courte période, la
@@ -120,7 +121,7 @@ consommation par demi-heure et son coût, et la montre dans **Énergie**.
 - Une climatisation qui ne remonte pas ce compteur n'a pas cette fonction.
 - **Multi-split** (plusieurs unités intérieures sur une seule unité
   extérieure) : le compteur est celui de l'unité extérieure, chaque Faikout
-  peut donc remonter le même : vérifiez dans **Énergie** qu'il n'est pas
+  peut donc remonter le même : vérifiez dans **Suivi de l'énergie** qu'il n'est pas
   compté deux fois.
 
 ## Widgets du tableau de bord

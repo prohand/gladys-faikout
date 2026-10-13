@@ -60,7 +60,7 @@ Then click **Test the connection**: for each unit, the message says whether it
 answers, its model, its protocol (S21, X50A…), its mode and the room
 temperature.
 
-Finally, open the integration's **Discovery** tab and create the devices it
+Finally, open the integration's **Discover** tab and create the devices it
 offers.
 
 ## What each device badge means
@@ -100,16 +100,17 @@ Their outputs can be used by the next actions of the scene (conditions,
 messages…).
 
 For a single command (switch on, change the set point), Gladys' standard
-**Control a device** action works too.
+**Set device value** action works too.
 
 ## Energy monitoring
 
 When the air conditioner reports its energy meter (Faikout field
 `Whoutside`, usually with the S21 protocol), the device gets an **Energy
 meter** feature, in kWh. It is an _index_: Gladys derives the 30-minute
-consumption and its cost from it by itself, and shows them in **Energy**.
+consumption and its cost from it by itself, and shows them in the **Energy Monitoring**
+integration.
 
-- Once the device is created, open **Energy** in Gladys: the air conditioner
+- Once the device is created, open **Integrations → Energy Monitoring** in Gladys: the air conditioner
   is listed there, attached to your main meter if you have one.
 - The meter moves by steps of 100 Wh: over a short period, the consumption
   shows as steps.
@@ -117,7 +118,7 @@ consumption and its cost from it by itself, and shows them in **Energy**.
 - An air conditioner that does not report this meter does not get the feature.
 - **Multi-split** (several indoor units on one outdoor unit): the meter is the
   outdoor unit's, so each Faikout may report the same one: check in
-  **Energy** that it is not counted twice.
+  **Energy Monitoring** that it is not counted twice.
 
 ## Dashboard widgets
 
