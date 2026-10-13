@@ -1,6 +1,6 @@
 {
   "name": "gladys-faikout",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Gladys Assistant external integration for Faikout local controllers of Daikin air conditioners.",
   "type": "module",

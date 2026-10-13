@@ -6,8 +6,8 @@
     "en": "Control your Daikin air conditioners locally through their Faikout module.",
     "fr": "Pilotez vos climatisations Daikin en local grâce à leur module Faikout."
   },
-  "version": "1.0.1",
-  "docker_image": "ghcr.io/prohand/gladys-faikout:1.0.1",
+  "version": "1.0.2",
+  "docker_image": "ghcr.io/prohand/gladys-faikout:1.0.2",
   "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/prohand/gladys-faikout/main/cover.png",
   "categories": ["climate", "energy"],
