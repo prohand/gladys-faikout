@@ -47,7 +47,7 @@ src/faikout/store.js        /data/faikout-units.json: MAC, name, model, capabili
 src/scenes.js               scene actions (manifest `scene_actions`)
 src/widgets.js              dashboard widgets (manifest `widgets`)
 src/connection.js           Configuration screen status + "Test the connection"
-src/labels.js               bilingual words shared by widgets and messages
+src/labels.js               words in en/fr/de/es shared by widgets and messages
 test/helpers/fakeFaikout.js fake units, fake WebSocket and fetch: no network in tests
 ```
 
@@ -91,7 +91,7 @@ test/helpers/fakeFaikout.js fake units, fake WebSocket and fetch: no network in 
 
 `test/manifest.test.js` ties `gladys-assistant-integration.json` to the code: defaults,
 handlers for every action / scene action / widget, every trigger declared and fired, event
-data keys declared, bilingual texts, version and image tag in lockstep.
+data keys declared, texts in en/fr/de/es, version and image tag in lockstep.
 
 ## Conventions
 
@@ -100,7 +100,7 @@ data keys declared, bilingual texts, version and image tag in lockstep.
 - **Changelog**: every user-visible change adds a line under `## [Unreleased]` in
   `CHANGELOG.md` (`### Added`, `Changed`, `Fixed`, `Removed`, `Security`). Never write a
   version heading: the Release workflow does it.
-- **User-facing text is bilingual** `{ en, fr }`: manifest, action messages, widgets, and
-  `docs/en.md` / `docs/fr.md` kept in sync.
+- **User-facing text is** `{ en, fr, de, es }`: manifest, action messages, widgets, and
+  `docs/en.md`, `docs/fr.md`, `docs/de.md`, `docs/es.md` stay in sync.
 - Prettier formats, ESLint catches mistakes. Comments explain **why**, in English. Tests
   never touch the network.

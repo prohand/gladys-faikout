@@ -11,6 +11,7 @@ import { createFakeGladys } from '@gladysassistant/integration-sdk/testing';
 import { createApp } from '../src/app.js';
 import { DEFAULT_CONFIG, POLL_FREQUENCY_MAX, POLL_FREQUENCY_MIN } from '../src/config.js';
 import { TRIGGERS } from '../src/faikout/manager.js';
+import { LANGUAGES } from '../src/labels.js';
 import { createMemoryStore } from '../src/faikout/store.js';
 import { SCENE_ACTIONS } from '../src/scenes.js';
 import { WIDGETS } from '../src/widgets.js';
@@ -70,14 +71,38 @@ test('the integration is declared local only: Faikout has no cloud', () => {
   assert.ok(manifest.categories.includes('climate'));
 });
 
-test('every manifest text is bilingual (en and fr), never a plain string', () => {
+test('every manifest text is in en, fr, de and es, never a plain string', () => {
   for (const [path, value] of texts(manifest)) {
     assert.equal(typeof value, 'object', `${path} must be a multi-language object`);
-    assert.ok(value.en && value.fr, `${path} needs en and fr`);
+    for (const language of LANGUAGES) {
+      assert.ok(value[language], `${path} needs ${language}`);
+    }
+  }
+});
+
+test('widget labels hold 3 to 30 characters and descriptions 100 at most, per language', () => {
+  for (const widget of manifest.widgets) {
+    for (const language of LANGUAGES) {
+      const label = widget.label[language];
+      assert.ok(label.length >= 3 && label.length <= 30, `${widget.key}.label.${language}`);
+      assert.ok(
+        widget.description[language].length <= 100,
+        `${widget.key}.description.${language}`,
+      );
+    }
+  }
+});
+
+test('section texts hold 1000 characters at most, per language', () => {
+  for (const field of manifest.config_schema.filter((f) => f.type === 'section')) {
+    for (const language of LANGUAGES) {
+      assert.ok(field.description[language].length <= 1000, `${field.key}.${language}`);
+    }
   }
 });
 
 test('the catalog description holds 10 to 100 characters per language', () => {
+  assert.deepEqual(Object.keys(manifest.description), LANGUAGES);
   for (const [lang, text] of Object.entries(manifest.description)) {
     assert.ok(text.length >= 10 && text.length <= 100, `description.${lang}: ${text.length}`);
   }

@@ -264,6 +264,8 @@ export class UnitManager {
             message: {
               en: 'The Faikout answers, but the air conditioner does not.',
               fr: 'Le Faikout répond, mais pas la climatisation.',
+              de: 'Der Faikout antwortet, aber das Klimagerät nicht.',
+              es: 'El Faikout responde, pero el aire acondicionado no.',
             },
           };
         }

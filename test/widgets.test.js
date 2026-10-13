@@ -4,6 +4,7 @@ import { validateWidgetContent } from '@gladysassistant/integration-sdk';
 import { createFakeGladys } from '@gladysassistant/integration-sdk/testing';
 import { createApp } from '../src/app.js';
 import { createMemoryStore } from '../src/faikout/store.js';
+import { LANGUAGES } from '../src/labels.js';
 import { OVERVIEW_WIDGET, UNIT_WIDGET } from '../src/widgets.js';
 import { FakeUnit, createFakeNetwork } from './helpers/fakeFaikout.js';
 
@@ -35,6 +36,21 @@ const getContent = async (gladys, key, settings = {}, units = 'metric') => {
   assert.equal(ack.success, true, ack.error);
   return ack.data.content;
 };
+
+// Every multi-language text of a widget content is written in every language.
+function assertEveryLanguage(node, path = 'content') {
+  if (Array.isArray(node)) {
+    node.forEach((item, i) => assertEveryLanguage(item, `${path}[${i}]`));
+  } else if (node && typeof node === 'object') {
+    if (typeof node.en === 'string') {
+      assert.deepEqual(Object.keys(node).sort(), [...LANGUAGES].sort(), path);
+      return;
+    }
+    for (const [key, value] of Object.entries(node)) {
+      assertEveryLanguage(value, `${path}.${key}`);
+    }
+  }
+}
 
 test('the unit widget is rendered exactly as sent, tiles and chart bound to published features', async () => {
   const { gladys, close } = await boot();
@@ -92,10 +108,16 @@ test('the unit widget follows power, flaps and comfort modes', async () => {
     const rows = Object.fromEntries(
       content.components.find((c) => c.type === 'status').items.map((r) => [r.label.en, r.value]),
     );
-    assert.deepEqual(rows.State, { en: 'Off', fr: 'Arrêtée' });
-    assert.deepEqual(rows.Mode, { en: 'Heating', fr: 'Chauffage' });
-    assert.deepEqual(rows.Flaps, { en: 'Fixed', fr: 'Fixes' });
-    assert.deepEqual(rows['Comfort modes'], { en: 'Econo, Quiet', fr: 'Éco, Silence' });
+    assert.deepEqual(rows.State, { en: 'Off', fr: 'Arrêtée', de: 'Aus', es: 'Apagado' });
+    assert.deepEqual(rows.Mode, { en: 'Heating', fr: 'Chauffage', de: 'Heizen', es: 'Calor' });
+    assert.deepEqual(rows.Flaps, { en: 'Fixed', fr: 'Fixes', de: 'Fest', es: 'Fijas' });
+    assert.deepEqual(rows['Comfort modes'], {
+      en: 'Econo, Quiet',
+      fr: 'Éco, Silence',
+      de: 'Eco, Leise',
+      es: 'Eco, Silencio',
+    });
+    assertEveryLanguage(content);
     const power = content.components.find((c) => c.type === 'button' && c.device_feature);
     assert.deepEqual([power.label.fr, power.value], ['Allumer', 1]);
   } finally {
@@ -133,7 +155,14 @@ test('the unit widget without a unit, or with an unreachable one, stays valid', 
     assert.deepEqual(validateWidgetContent(down), []);
     const rows = down.components.find((c) => c.type === 'status').items;
     assert.equal(rows.length, 1);
-    assert.deepEqual(rows[0].value, { en: 'Unreachable', fr: 'Injoignable' });
+    assert.deepEqual(rows[0].value, {
+      en: 'Unreachable',
+      fr: 'Injoignable',
+      de: 'Nicht erreichbar',
+      es: 'Inaccesible',
+    });
+    assertEveryLanguage(empty);
+    assertEveryLanguage(down);
     assert.equal(rows[0].color, 'danger');
   } finally {
     await close();
@@ -153,6 +182,8 @@ test('the overview lists every unit', async () => {
         ['10.0.0.6', 'Unreachable'],
       ],
     );
+    assertEveryLanguage(content);
+    assert.equal(rows[0].value.de, 'Heizen · 21.5 °C');
   } finally {
     await close();
   }
@@ -168,6 +199,7 @@ test('the overview with no unit, or more than ten, stays valid', async () => {
     assert.deepEqual(validateWidgetContent(content), []);
     assert.equal(content.components.find((c) => c.type === 'status').items.length, 10);
     assert.equal(content.components.find((c) => c.type === 'text').text.en, 'And 2 more');
+    assertEveryLanguage(content);
   } finally {
     await close();
   }
