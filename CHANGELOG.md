@@ -6,6 +6,8 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-13
+
 ### Added
 
 - Faikout integration for Gladys 5.1+, local only: one device per Daikin air conditioner fitted with a Faikout module, keyed by its MAC address.
@@ -20,4 +22,5 @@ All notable changes to this integration are documented here. The format follows
 - Energy meter (kWh index) of the units that report it, for Gladys energy monitoring: 30-minute consumption and cost.
 - `SECURITY.md`, `CHANGELOG.md` and `CLAUDE.md`.
 
-[Unreleased]: https://github.com/prohand/gladys-faikout/commits/main
+[Unreleased]: https://github.com/prohand/gladys-faikout/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/prohand/gladys-faikout/releases/tag/v1.0.1

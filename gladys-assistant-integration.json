@@ -6,8 +6,8 @@
     "en": "Control your Daikin air conditioners locally through their Faikout module.",
     "fr": "Pilotez vos climatisations Daikin en local grâce à leur module Faikout."
   },
-  "version": "1.0.0",
-  "docker_image": "ghcr.io/prohand/gladys-faikout:1.0.0",
+  "version": "1.0.1",
+  "docker_image": "ghcr.io/prohand/gladys-faikout:1.0.1",
   "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/prohand/gladys-faikout/main/cover.png",
   "categories": ["climate", "energy"],
@@ -16,7 +16,10 @@
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "Getting started",
+        "fr": "Pour commencer"
+      },
       "description": {
         "en": "Faikout replaces the Wi-Fi module of a Daikin air conditioner and is driven on your network, with no cloud. Join each unit to your Wi-Fi first (see the Faikout setup manual), keep its web controls on (they are by default), then list the units below. Gladys finds their features by itself.",
         "fr": "Faikout remplace le module Wi-Fi d'une climatisation Daikin et se pilote sur votre réseau, sans cloud. Connectez d'abord chaque unité à votre Wi-Fi (voir le manuel d'installation Faikout), laissez ses commandes web actives (elles le sont par défaut), puis listez les unités ci-dessous. Gladys trouve seul leurs fonctions."
@@ -24,22 +27,34 @@
       "links": [
         {
           "url": "https://www.faikin.au",
-          "label": { "en": "Faikout website", "fr": "Site Faikout" }
+          "label": {
+            "en": "Faikout website",
+            "fr": "Site Faikout"
+          }
         },
         {
           "url": "https://codeberg.org/RevK/ESP32-Faikout/src/branch/main/Manuals/Setup.md",
-          "label": { "en": "Faikout setup manual", "fr": "Manuel d'installation Faikout" }
+          "label": {
+            "en": "Faikout setup manual",
+            "fr": "Manuel d'installation Faikout"
+          }
         },
         {
           "url": "https://github.com/prohand/gladys-faikout/blob/main/docs/en.md",
-          "label": { "en": "Integration documentation", "fr": "Documentation de l'intégration" }
+          "label": {
+            "en": "Integration documentation",
+            "fr": "Documentation de l'intégration"
+          }
         }
       ]
     },
     {
       "key": "units",
       "type": "string",
-      "label": { "en": "Faikout units", "fr": "Unités Faikout" },
+      "label": {
+        "en": "Faikout units",
+        "fr": "Unités Faikout"
+      },
       "description": {
         "en": "The address of each unit, separated by commas. Prefer a fixed IP address: names ending in .local are often not resolved inside the integration. Put a name and = in front to name the device, e.g. Living room=192.168.1.50.",
         "fr": "L'adresse de chaque unité, séparées par des virgules. Préférez une adresse IP fixe : les noms en .local ne sont souvent pas résolus dans l'intégration. Mettez un nom et = devant pour nommer l'appareil, par exemple Salon=192.168.1.50."
@@ -54,7 +69,10 @@
     {
       "key": "password",
       "type": "secret",
-      "label": { "en": "Web password", "fr": "Mot de passe web" },
+      "label": {
+        "en": "Web password",
+        "fr": "Mot de passe web"
+      },
       "description": {
         "en": "Only if a web password is set in the Faikout settings: the same one for every unit. Leave empty otherwise. The settings password is not needed.",
         "fr": "Seulement si un mot de passe web est défini dans les réglages du Faikout : le même pour toutes les unités. Laissez vide sinon. Le mot de passe des réglages n'est pas utile."
@@ -64,7 +82,10 @@
     {
       "key": "poll_frequency",
       "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "label": {
+        "en": "Refresh interval (s)",
+        "fr": "Intervalle de rafraîchissement (s)"
+      },
       "description": {
         "en": "How often each unit is read, in seconds. A change made with the remote control shows up in Gladys after at most this delay.",
         "fr": "Fréquence de lecture de chaque unité, en secondes. Un changement fait à la télécommande apparaît dans Gladys au plus tard après ce délai."
@@ -78,7 +99,10 @@
   "actions": [
     {
       "key": "test_connection",
-      "label": { "en": "Test the connection", "fr": "Tester la connexion" },
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion"
+      },
       "timeout_seconds": 30
     }
   ],
@@ -98,24 +122,52 @@
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Air conditioner", "fr": "Climatisation" }
+          "label": {
+            "en": "Air conditioner",
+            "fr": "Climatisation"
+          }
         },
         {
           "key": "state",
           "type": "multi_select",
-          "label": { "en": "Becomes", "fr": "Devient" },
+          "label": {
+            "en": "Becomes",
+            "fr": "Devient"
+          },
           "options": [
-            { "value": "offline", "label": { "en": "Offline", "fr": "Hors ligne" } },
-            { "value": "online", "label": { "en": "Online", "fr": "En ligne" } }
+            {
+              "value": "offline",
+              "label": {
+                "en": "Offline",
+                "fr": "Hors ligne"
+              }
+            },
+            {
+              "value": "online",
+              "label": {
+                "en": "Online",
+                "fr": "En ligne"
+              }
+            }
           ]
         }
       ],
       "variables": [
-        { "key": "state", "type": "string", "label": { "en": "New state", "fr": "Nouvel état" } },
+        {
+          "key": "state",
+          "type": "string",
+          "label": {
+            "en": "New state",
+            "fr": "Nouvel état"
+          }
+        },
         {
           "key": "reason",
           "type": "string",
-          "label": { "en": "Reason (unreachable, aircon)", "fr": "Raison (unreachable, aircon)" }
+          "label": {
+            "en": "Reason (unreachable, aircon)",
+            "fr": "Raison (unreachable, aircon)"
+          }
         }
       ]
     },
@@ -134,17 +186,47 @@
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Air conditioner", "fr": "Climatisation" }
+          "label": {
+            "en": "Air conditioner",
+            "fr": "Climatisation"
+          }
         },
         {
           "key": "what",
           "type": "multi_select",
-          "label": { "en": "What changed", "fr": "Ce qui a changé" },
+          "label": {
+            "en": "What changed",
+            "fr": "Ce qui a changé"
+          },
           "options": [
-            { "value": "power", "label": { "en": "Power", "fr": "Marche / arrêt" } },
-            { "value": "mode", "label": { "en": "Mode", "fr": "Mode" } },
-            { "value": "temp", "label": { "en": "Set point", "fr": "Consigne" } },
-            { "value": "fan", "label": { "en": "Fan speed", "fr": "Vitesse de ventilation" } }
+            {
+              "value": "power",
+              "label": {
+                "en": "Power",
+                "fr": "Marche / arrêt"
+              }
+            },
+            {
+              "value": "mode",
+              "label": {
+                "en": "Mode",
+                "fr": "Mode"
+              }
+            },
+            {
+              "value": "temp",
+              "label": {
+                "en": "Set point",
+                "fr": "Consigne"
+              }
+            },
+            {
+              "value": "fan",
+              "label": {
+                "en": "Fan speed",
+                "fr": "Vitesse de ventilation"
+              }
+            }
           ]
         }
       ],
@@ -152,9 +234,19 @@
         {
           "key": "what",
           "type": "string",
-          "label": { "en": "What changed", "fr": "Ce qui a changé" }
+          "label": {
+            "en": "What changed",
+            "fr": "Ce qui a changé"
+          }
         },
-        { "key": "power", "type": "boolean", "label": { "en": "Powered on", "fr": "Allumée" } },
+        {
+          "key": "power",
+          "type": "boolean",
+          "label": {
+            "en": "Powered on",
+            "fr": "Allumée"
+          }
+        },
         {
           "key": "mode",
           "type": "string",
@@ -166,12 +258,18 @@
         {
           "key": "temperature",
           "type": "number",
-          "label": { "en": "Set point (°C)", "fr": "Consigne (°C)" }
+          "label": {
+            "en": "Set point (°C)",
+            "fr": "Consigne (°C)"
+          }
         },
         {
           "key": "fan",
           "type": "string",
-          "label": { "en": "Fan speed", "fr": "Vitesse de ventilation" }
+          "label": {
+            "en": "Fan speed",
+            "fr": "Vitesse de ventilation"
+          }
         }
       ]
     },
@@ -190,27 +288,55 @@
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Air conditioner", "fr": "Climatisation" }
+          "label": {
+            "en": "Air conditioner",
+            "fr": "Climatisation"
+          }
         },
         {
           "key": "state",
           "type": "multi_select",
-          "label": { "en": "Defrost", "fr": "Dégivrage" },
+          "label": {
+            "en": "Defrost",
+            "fr": "Dégivrage"
+          },
           "options": [
-            { "value": "started", "label": { "en": "Started", "fr": "Commencé" } },
-            { "value": "ended", "label": { "en": "Ended", "fr": "Terminé" } }
+            {
+              "value": "started",
+              "label": {
+                "en": "Started",
+                "fr": "Commencé"
+              }
+            },
+            {
+              "value": "ended",
+              "label": {
+                "en": "Ended",
+                "fr": "Terminé"
+              }
+            }
           ]
         }
       ],
       "variables": [
-        { "key": "state", "type": "string", "label": { "en": "Defrost", "fr": "Dégivrage" } }
+        {
+          "key": "state",
+          "type": "string",
+          "label": {
+            "en": "Defrost",
+            "fr": "Dégivrage"
+          }
+        }
       ]
     }
   ],
   "scene_actions": [
     {
       "key": "set_climate",
-      "label": { "en": "Set an air conditioner", "fr": "Régler une climatisation" },
+      "label": {
+        "en": "Set an air conditioner",
+        "fr": "Régler une climatisation"
+      },
       "description": {
         "en": "Power, mode, set point and fan speed in one go. Leave a field empty to keep its value.",
         "fr": "Marche, mode, consigne et ventilation en une fois. Laissez un champ vide pour garder sa valeur."
@@ -221,36 +347,90 @@
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Air conditioner", "fr": "Climatisation" },
+          "label": {
+            "en": "Air conditioner",
+            "fr": "Climatisation"
+          },
           "required": true
         },
         {
           "key": "power",
           "type": "select",
-          "label": { "en": "Power", "fr": "Marche / arrêt" },
+          "label": {
+            "en": "Power",
+            "fr": "Marche / arrêt"
+          },
           "required": false,
           "options": [
-            { "value": "on", "label": { "en": "On", "fr": "Allumer" } },
-            { "value": "off", "label": { "en": "Off", "fr": "Éteindre" } }
+            {
+              "value": "on",
+              "label": {
+                "en": "On",
+                "fr": "Allumer"
+              }
+            },
+            {
+              "value": "off",
+              "label": {
+                "en": "Off",
+                "fr": "Éteindre"
+              }
+            }
           ]
         },
         {
           "key": "mode",
           "type": "select",
-          "label": { "en": "Mode", "fr": "Mode" },
+          "label": {
+            "en": "Mode",
+            "fr": "Mode"
+          },
           "required": false,
           "options": [
-            { "value": "auto", "label": { "en": "Auto", "fr": "Auto" } },
-            { "value": "cool", "label": { "en": "Cooling", "fr": "Froid" } },
-            { "value": "heat", "label": { "en": "Heating", "fr": "Chauffage" } },
-            { "value": "dry", "label": { "en": "Dry", "fr": "Déshumidification" } },
-            { "value": "fan", "label": { "en": "Fan only", "fr": "Ventilation" } }
+            {
+              "value": "auto",
+              "label": {
+                "en": "Auto",
+                "fr": "Auto"
+              }
+            },
+            {
+              "value": "cool",
+              "label": {
+                "en": "Cooling",
+                "fr": "Froid"
+              }
+            },
+            {
+              "value": "heat",
+              "label": {
+                "en": "Heating",
+                "fr": "Chauffage"
+              }
+            },
+            {
+              "value": "dry",
+              "label": {
+                "en": "Dry",
+                "fr": "Déshumidification"
+              }
+            },
+            {
+              "value": "fan",
+              "label": {
+                "en": "Fan only",
+                "fr": "Ventilation"
+              }
+            }
           ]
         },
         {
           "key": "temperature",
           "type": "number",
-          "label": { "en": "Set point (°C)", "fr": "Consigne (°C)" },
+          "label": {
+            "en": "Set point (°C)",
+            "fr": "Consigne (°C)"
+          },
           "required": false,
           "min": 10,
           "max": 32
@@ -258,48 +438,129 @@
         {
           "key": "fan",
           "type": "select",
-          "label": { "en": "Fan speed", "fr": "Vitesse de ventilation" },
+          "label": {
+            "en": "Fan speed",
+            "fr": "Vitesse de ventilation"
+          },
           "required": false,
           "options": [
-            { "value": "auto", "label": { "en": "Auto", "fr": "Auto" } },
-            { "value": "quiet", "label": { "en": "Quiet", "fr": "Silencieux" } },
-            { "value": "1", "label": { "en": "Speed 1", "fr": "Vitesse 1" } },
-            { "value": "2", "label": { "en": "Speed 2", "fr": "Vitesse 2" } },
-            { "value": "3", "label": { "en": "Speed 3", "fr": "Vitesse 3" } },
-            { "value": "4", "label": { "en": "Speed 4", "fr": "Vitesse 4" } },
-            { "value": "5", "label": { "en": "Speed 5", "fr": "Vitesse 5" } }
+            {
+              "value": "auto",
+              "label": {
+                "en": "Auto",
+                "fr": "Auto"
+              }
+            },
+            {
+              "value": "quiet",
+              "label": {
+                "en": "Quiet",
+                "fr": "Silencieux"
+              }
+            },
+            {
+              "value": "1",
+              "label": {
+                "en": "Speed 1",
+                "fr": "Vitesse 1"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "Speed 2",
+                "fr": "Vitesse 2"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "Speed 3",
+                "fr": "Vitesse 3"
+              }
+            },
+            {
+              "value": "4",
+              "label": {
+                "en": "Speed 4",
+                "fr": "Vitesse 4"
+              }
+            },
+            {
+              "value": "5",
+              "label": {
+                "en": "Speed 5",
+                "fr": "Vitesse 5"
+              }
+            }
           ]
         }
       ],
       "outputs": [
-        { "key": "online", "type": "boolean", "label": { "en": "Online", "fr": "En ligne" } },
-        { "key": "power", "type": "boolean", "label": { "en": "Powered on", "fr": "Allumée" } },
-        { "key": "mode", "type": "string", "label": { "en": "Mode", "fr": "Mode" } },
+        {
+          "key": "online",
+          "type": "boolean",
+          "label": {
+            "en": "Online",
+            "fr": "En ligne"
+          }
+        },
+        {
+          "key": "power",
+          "type": "boolean",
+          "label": {
+            "en": "Powered on",
+            "fr": "Allumée"
+          }
+        },
+        {
+          "key": "mode",
+          "type": "string",
+          "label": {
+            "en": "Mode",
+            "fr": "Mode"
+          }
+        },
         {
           "key": "target_temperature",
           "type": "number",
-          "label": { "en": "Set point (°C)", "fr": "Consigne (°C)" }
+          "label": {
+            "en": "Set point (°C)",
+            "fr": "Consigne (°C)"
+          }
         },
         {
           "key": "room_temperature",
           "type": "number",
-          "label": { "en": "Room temperature (°C)", "fr": "Température de la pièce (°C)" }
+          "label": {
+            "en": "Room temperature (°C)",
+            "fr": "Température de la pièce (°C)"
+          }
         },
         {
           "key": "outside_temperature",
           "type": "number",
-          "label": { "en": "Outside temperature (°C)", "fr": "Température extérieure (°C)" }
+          "label": {
+            "en": "Outside temperature (°C)",
+            "fr": "Température extérieure (°C)"
+          }
         },
         {
           "key": "humidity",
           "type": "number",
-          "label": { "en": "Humidity (%)", "fr": "Humidité (%)" }
+          "label": {
+            "en": "Humidity (%)",
+            "fr": "Humidité (%)"
+          }
         }
       ]
     },
     {
       "key": "set_faikout_auto",
-      "label": { "en": "Set Faikout auto", "fr": "Régler le Faikout auto" },
+      "label": {
+        "en": "Set Faikout auto",
+        "fr": "Régler le Faikout auto"
+      },
       "description": {
         "en": "The Faikout heats or cools by itself to keep the room within target ± range. A range of 0 stops it.",
         "fr": "Le Faikout chauffe ou refroidit seul pour garder la pièce dans cible ± marge. Une marge de 0 l'arrête."
@@ -310,13 +571,19 @@
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Air conditioner", "fr": "Climatisation" },
+          "label": {
+            "en": "Air conditioner",
+            "fr": "Climatisation"
+          },
           "required": true
         },
         {
           "key": "target",
           "type": "number",
-          "label": { "en": "Target (°C)", "fr": "Cible (°C)" },
+          "label": {
+            "en": "Target (°C)",
+            "fr": "Cible (°C)"
+          },
           "required": true,
           "min": 10,
           "max": 32
@@ -324,7 +591,10 @@
         {
           "key": "range",
           "type": "number",
-          "label": { "en": "Range (°C)", "fr": "Marge (°C)" },
+          "label": {
+            "en": "Range (°C)",
+            "fr": "Marge (°C)"
+          },
           "description": {
             "en": "Allowed gap on each side of the target. 0 stops Faikout auto.",
             "fr": "Écart permis de chaque côté de la cible. 0 arrête le Faikout auto."
@@ -339,13 +609,19 @@
         {
           "key": "enabled",
           "type": "boolean",
-          "label": { "en": "Faikout auto on", "fr": "Faikout auto actif" }
+          "label": {
+            "en": "Faikout auto on",
+            "fr": "Faikout auto actif"
+          }
         }
       ]
     },
     {
       "key": "read_status",
-      "label": { "en": "Read an air conditioner", "fr": "Lire une climatisation" },
+      "label": {
+        "en": "Read an air conditioner",
+        "fr": "Lire une climatisation"
+      },
       "description": {
         "en": "A fresh reading for the next actions: temperatures, mode, power. Never fails: check Online.",
         "fr": "Une lecture fraîche pour les actions suivantes : températures, mode, marche. N'échoue jamais : vérifiez En ligne."
@@ -356,33 +632,69 @@
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Air conditioner", "fr": "Climatisation" },
+          "label": {
+            "en": "Air conditioner",
+            "fr": "Climatisation"
+          },
           "required": true
         }
       ],
       "outputs": [
-        { "key": "online", "type": "boolean", "label": { "en": "Online", "fr": "En ligne" } },
-        { "key": "power", "type": "boolean", "label": { "en": "Powered on", "fr": "Allumée" } },
-        { "key": "mode", "type": "string", "label": { "en": "Mode", "fr": "Mode" } },
+        {
+          "key": "online",
+          "type": "boolean",
+          "label": {
+            "en": "Online",
+            "fr": "En ligne"
+          }
+        },
+        {
+          "key": "power",
+          "type": "boolean",
+          "label": {
+            "en": "Powered on",
+            "fr": "Allumée"
+          }
+        },
+        {
+          "key": "mode",
+          "type": "string",
+          "label": {
+            "en": "Mode",
+            "fr": "Mode"
+          }
+        },
         {
           "key": "target_temperature",
           "type": "number",
-          "label": { "en": "Set point (°C)", "fr": "Consigne (°C)" }
+          "label": {
+            "en": "Set point (°C)",
+            "fr": "Consigne (°C)"
+          }
         },
         {
           "key": "room_temperature",
           "type": "number",
-          "label": { "en": "Room temperature (°C)", "fr": "Température de la pièce (°C)" }
+          "label": {
+            "en": "Room temperature (°C)",
+            "fr": "Température de la pièce (°C)"
+          }
         },
         {
           "key": "outside_temperature",
           "type": "number",
-          "label": { "en": "Outside temperature (°C)", "fr": "Température extérieure (°C)" }
+          "label": {
+            "en": "Outside temperature (°C)",
+            "fr": "Température extérieure (°C)"
+          }
         },
         {
           "key": "humidity",
           "type": "number",
-          "label": { "en": "Humidity (%)", "fr": "Humidité (%)" }
+          "label": {
+            "en": "Humidity (%)",
+            "fr": "Humidité (%)"
+          }
         }
       ]
     }
@@ -390,7 +702,10 @@
   "widgets": [
     {
       "key": "unit",
-      "label": { "en": "Faikout air conditioner", "fr": "Climatisation Faikout" },
+      "label": {
+        "en": "Faikout air conditioner",
+        "fr": "Climatisation Faikout"
+      },
       "description": {
         "en": "Temperatures, 24 h chart, mode, fan, flaps, comfort modes, On/Off.",
         "fr": "Températures, courbe 24 h, mode, ventilation, volets, modes confort, Marche/Arrêt."
@@ -401,7 +716,10 @@
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Air conditioner", "fr": "Climatisation" },
+          "label": {
+            "en": "Air conditioner",
+            "fr": "Climatisation"
+          },
           "required": true
         }
       ],
@@ -409,7 +727,10 @@
     },
     {
       "key": "overview",
-      "label": { "en": "Faikout overview", "fr": "Vue d'ensemble Faikout" },
+      "label": {
+        "en": "Faikout overview",
+        "fr": "Vue d'ensemble Faikout"
+      },
       "description": {
         "en": "Every air conditioner at a glance: link, mode and room temperature.",
         "fr": "Toutes les climatisations d'un coup d'œil : liaison, mode et température."
