@@ -26,12 +26,13 @@ node --test --test-name-pattern "defrost"   # one test by name
 npm run lint                                # eslint .
 npm run format:check                        # prettier --check . (CI gate)
 npm run format                              # prettier --write .
-npx github:GladysAssistant/integration-store .   # store admission checks
+npx github:GladysAssistant/integration-store --skip-image-check .   # store checks, no image
 ```
 
-CI runs `format:check`, `lint`, `test` on Node 22 and 24, plus the store checks and a
-Docker build on pull requests. Releases: **Actions → Release** only (bumps `package.json`,
-manifest `version` + `docker_image`, rolls `CHANGELOG.md`, tags, builds, GitHub Release).
+CI runs `format:check`, `lint`, `test` on Node 22 and 24, plus the store checks (image
+skipped: not built before the release) and a Docker build on pull requests. Releases:
+**Actions → Release** only (bumps `package.json`, manifest `version` + `docker_image`, rolls
+`CHANGELOG.md`, tags, builds, GitHub Release, then the full store check, image included).
 
 ## Architecture
 
