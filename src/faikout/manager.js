@@ -57,7 +57,20 @@ const STATE_HEARTBEAT_MS = 30 * 60 * 1000;
 // long: the unit may take a poll or two to show it settled.
 const COMMAND_ECHO_MS = 2 * 60 * 1000;
 // What the widgets show, besides the live feature tiles.
-const WIDGET_FIELDS = ['power', 'mode', 'fan', 'temp', 'antifreeze', 'control', 'comp'];
+const WIDGET_FIELDS = [
+  'power',
+  'mode',
+  'fan',
+  'temp',
+  'swingh',
+  'swingv',
+  'econo',
+  'powerful',
+  'comfort',
+  'quiet',
+  'streamer',
+  'antifreeze',
+];
 const WIDGET_SETTINGS = ['autoe', 'autot', 'autor'];
 
 export class UnitManager {

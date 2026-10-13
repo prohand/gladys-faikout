@@ -392,8 +392,8 @@
       "key": "unit",
       "label": { "en": "Faikout air conditioner", "fr": "Climatisation Faikout" },
       "description": {
-        "en": "Temperatures, mode, fan, Faikout auto and defrost of one unit, with On/Off.",
-        "fr": "Températures, mode, ventilation, Faikout auto et dégivrage d'une unité, avec Marche/Arrêt."
+        "en": "Temperatures and their 24 h chart, mode, fan, flaps and comfort modes of one unit, with On/Off.",
+        "fr": "Températures et leur courbe sur 24 h, mode, ventilation, volets et modes confort d'une unité, avec Marche/Arrêt."
       },
       "icon": "wind",
       "settings": [

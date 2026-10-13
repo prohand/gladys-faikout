@@ -26,7 +26,7 @@ User documentation: [English](./docs/en.md) · [Français](./docs/fr.md).
   (IR remote, Faikout page, timer), defrost started or ended.
 - **Scene actions**: set an air conditioner (power, mode, set point, fan in one go), set
   Faikout auto (target ± range), read an air conditioner (fresh values as outputs).
-- **Dashboard widgets**: one air conditioner (live tiles, status, On/Off), and an overview
+- **Dashboard widgets**: one air conditioner (live tiles, 24 h temperature chart, status, On/Off), and an overview
   of all units.
 
 ## How it talks to the hardware
