@@ -3,7 +3,7 @@
 //
 // A Faikout answers every frame sent to its `/status` WebSocket with one JSON
 // object: the controls (`power`, `mode`, `temp`, `fan`, `swingh`...) and the
-// readings (`home`, `outside`, `hum`, `consumption`...). A field is present
+// readings (`home`, `outside`, `hum`, `consumption`, `Whoutside`...). A field is present
 // only when the air conditioner reports it, so the features of a unit are
 // deduced from the fields it sends (`capabilitiesOf`), never assumed.
 //
@@ -251,6 +251,23 @@ export const FEATURES = [
     has_feedback: false,
     keep_history: true,
     ...reading,
+  },
+  {
+    // The lifetime energy meter of the unit (S21 `GM`), in Wh by steps of
+    // 100 Wh. Published as a kWh index: Gladys energy monitoring derives the
+    // 30-minute consumption and its cost from it. Only this one meter: the
+    // heating / cooling split (`Whheating`, `Whcooling`) would be counted twice.
+    key: 'Whoutside',
+    name: 'Energy meter',
+    category: CATEGORIES.ENERGY_SENSOR,
+    type: TYPES.ENERGY_SENSOR.INDEX,
+    unit: UNITS.KILOWATT_HOUR,
+    min: 0,
+    max: 1000000,
+    read_only: true,
+    has_feedback: false,
+    keep_history: true,
+    toGladys: (value) => (isNumber(value) && value >= 0 ? value / 1000 : undefined),
   },
 ];
 

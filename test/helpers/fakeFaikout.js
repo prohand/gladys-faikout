@@ -21,6 +21,7 @@ export const SAMPLE_STATUS = {
   liquid: 30,
   hum: 45,
   consumption: 450,
+  Whoutside: 1234500,
   power: true,
   mode: 'H',
   temp: 22,

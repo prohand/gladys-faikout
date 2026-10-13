@@ -14,7 +14,7 @@ Dans Gladys, chaque climatisation devient un appareil avec :
   climatisation les a ;
 - les mesures : **température de la pièce**, **température extérieure**,
   températures d'**entrée d'air** et du **fluide frigorigène**, **humidité**,
-  **puissance consommée**.
+  **puissance consommée** et le **compteur d'énergie** (kWh).
 
 L'intégration ne crée que ce que votre climatisation remonte vraiment : une
 fonction absente de votre modèle n'apparaît pas.
@@ -103,6 +103,25 @@ scène (conditions, messages…).
 
 Pour une simple commande (allumer, changer la consigne), l'action standard
 **Contrôler un appareil** de Gladys marche aussi.
+
+## Suivi de l'énergie
+
+Quand la climatisation remonte son compteur d'énergie (champ `Whoutside` du
+Faikout, souvent avec le protocole S21), l'appareil a une fonction **Compteur
+d'énergie**, en kWh. C'est un _index_ : Gladys en déduit tout seul la
+consommation par demi-heure et son coût, et la montre dans **Énergie**.
+
+- Après la création de l'appareil, ouvrez **Énergie** dans Gladys : la
+  climatisation y apparaît, rattachée à votre compteur principal si vous en
+  avez un.
+- Le compteur avance par pas de 100 Wh : sur une courte période, la
+  consommation se voit par paliers.
+- La **puissance consommée** (en W) reste disponible pour le direct.
+- Une climatisation qui ne remonte pas ce compteur n'a pas cette fonction.
+- **Multi-split** (plusieurs unités intérieures sur une seule unité
+  extérieure) : le compteur est celui de l'unité extérieure, chaque Faikout
+  peut donc remonter le même : vérifiez dans **Énergie** qu'il n'est pas
+  compté deux fois.
 
 ## Widgets du tableau de bord
 

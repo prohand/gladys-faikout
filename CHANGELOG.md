@@ -17,6 +17,7 @@ All notable changes to this integration are documented here. The format follows
 - "Test the connection" button in the Configuration screen.
 - "Web password" field, for units protected by a Faikout web password; the connection test says when it is missing or wrong.
 - Horizontal and vertical swing offer only Off and Swing in Gladys: Faikout flaps have no fixed positions.
+- Energy meter (kWh index) of the units that report it, for Gladys energy monitoring: 30-minute consumption and cost.
 - `SECURITY.md`, `CHANGELOG.md` and `CLAUDE.md`.
 
 [Unreleased]: https://github.com/prohand/gladys-faikout/commits/main

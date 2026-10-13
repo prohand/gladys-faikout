@@ -13,7 +13,7 @@ In Gladys, each air conditioner becomes a device with:
   **Comfort**, **Streamer** and **quiet outdoor unit** modes, when your unit
   has them;
 - the readings: **room temperature**, **outside temperature**, **inlet** and
-  **refrigerant** temperatures, **humidity**, **power consumption**.
+  **refrigerant** temperatures, **humidity**, **power consumption** and the **energy meter** (kWh).
 
 The integration only creates what your air conditioner actually reports: a
 function your model lacks does not show up.
@@ -101,6 +101,23 @@ messages…).
 
 For a single command (switch on, change the set point), Gladys' standard
 **Control a device** action works too.
+
+## Energy monitoring
+
+When the air conditioner reports its energy meter (Faikout field
+`Whoutside`, usually with the S21 protocol), the device gets an **Energy
+meter** feature, in kWh. It is an _index_: Gladys derives the 30-minute
+consumption and its cost from it by itself, and shows them in **Energy**.
+
+- Once the device is created, open **Energy** in Gladys: the air conditioner
+  is listed there, attached to your main meter if you have one.
+- The meter moves by steps of 100 Wh: over a short period, the consumption
+  shows as steps.
+- The **power consumption** (in W) stays available for live values.
+- An air conditioner that does not report this meter does not get the feature.
+- **Multi-split** (several indoor units on one outdoor unit): the meter is the
+  outdoor unit's, so each Faikout may report the same one: check in
+  **Energy** that it is not counted twice.
 
 ## Dashboard widgets
 
