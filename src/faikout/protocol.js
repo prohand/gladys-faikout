@@ -91,6 +91,17 @@ const SWING_OPTIONS = [
   { value: 0, label: 'Off', sort_order: 0 },
   { value: 1, label: 'Swing', sort_order: 1 },
 ];
+// Faikout fans have auto, five speeds and quiet: Gladys would otherwise also
+// offer Turbo (AC_FAN_SPEED 7), which the unit has no letter for.
+const FAN_OPTIONS = [
+  { value: AC_FAN_SPEED.AUTO, label: 'Auto', sort_order: 0 },
+  { value: AC_FAN_SPEED.LOW, label: 'Low', sort_order: 1 },
+  { value: AC_FAN_SPEED.LOW_MID, label: 'Low-mid', sort_order: 2 },
+  { value: AC_FAN_SPEED.MID, label: 'Mid', sort_order: 3 },
+  { value: AC_FAN_SPEED.MID_HIGH, label: 'Mid-high', sort_order: 4 },
+  { value: AC_FAN_SPEED.HIGH, label: 'High', sort_order: 5 },
+  { value: AC_FAN_SPEED.QUIET, label: 'Quiet', sort_order: 6 },
+];
 
 const switchFeature = (key, name) => ({
   key,
@@ -177,6 +188,7 @@ export const FEATURES = [
     read_only: false,
     has_feedback: true,
     keep_history: true,
+    supported_options: FAN_OPTIONS,
     ...control(FAN_FROM_FAIKOUT, FAN_TO_FAIKOUT),
   },
   {
