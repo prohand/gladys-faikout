@@ -4,7 +4,9 @@
   "name": "Faikout",
   "description": {
     "en": "Control your Daikin air conditioners locally through their Faikout module.",
-    "fr": "Pilotez vos climatisations Daikin en local grâce à leur module Faikout."
+    "fr": "Pilotez vos climatisations Daikin en local grâce à leur module Faikout.",
+    "de": "Steuere deine Daikin-Klimageräte lokal über ihr Faikout-Modul.",
+    "es": "Controle sus aires acondicionados Daikin en local mediante su módulo Faikout."
   },
   "version": "1.0.2",
   "docker_image": "ghcr.io/prohand/gladys-faikout:1.0.2",
@@ -18,32 +20,42 @@
       "type": "section",
       "label": {
         "en": "Getting started",
-        "fr": "Pour commencer"
+        "fr": "Pour commencer",
+        "de": "Erste Schritte",
+        "es": "Primeros pasos"
       },
       "description": {
         "en": "Faikout replaces the Wi-Fi module of a Daikin air conditioner and is driven on your network, with no cloud. Join each unit to your Wi-Fi first (see the Faikout setup manual), keep its web controls on (they are by default), then list the units below. Gladys finds their features by itself.",
-        "fr": "Faikout remplace le module Wi-Fi d'une climatisation Daikin et se pilote sur votre réseau, sans cloud. Connectez d'abord chaque unité à votre Wi-Fi (voir le manuel d'installation Faikout), laissez ses commandes web actives (elles le sont par défaut), puis listez les unités ci-dessous. Gladys trouve seul leurs fonctions."
+        "fr": "Faikout remplace le module Wi-Fi d'une climatisation Daikin et se pilote sur votre réseau, sans cloud. Connectez d'abord chaque unité à votre Wi-Fi (voir le manuel d'installation Faikout), laissez ses commandes web actives (elles le sont par défaut), puis listez les unités ci-dessous. Gladys trouve seul leurs fonctions.",
+        "de": "Faikout ersetzt das WLAN-Modul eines Daikin-Klimageräts und wird in deinem Netzwerk gesteuert, ohne Cloud. Verbinde zuerst jedes Gerät mit deinem WLAN (siehe Faikout-Installationsanleitung), lass seine Websteuerung aktiviert (standardmäßig der Fall) und trage die Geräte dann unten ein. Gladys erkennt ihre Funktionen selbst.",
+        "es": "Faikout sustituye el módulo Wi-Fi de un aire acondicionado Daikin y se controla en su red, sin nube. Conecte primero cada unidad a su Wi-Fi (consulte el manual de instalación de Faikout), mantenga activados sus controles web (lo están por defecto) y después indique las unidades a continuación. Gladys detecta sus funciones por sí solo."
       },
       "links": [
         {
           "url": "https://www.faikin.au",
           "label": {
             "en": "Faikout website",
-            "fr": "Site Faikout"
+            "fr": "Site Faikout",
+            "de": "Faikout-Website",
+            "es": "Sitio web de Faikout"
           }
         },
         {
           "url": "https://codeberg.org/RevK/ESP32-Faikout/src/branch/main/Manuals/Setup.md",
           "label": {
             "en": "Faikout setup manual",
-            "fr": "Manuel d'installation Faikout"
+            "fr": "Manuel d'installation Faikout",
+            "de": "Faikout-Installationsanleitung",
+            "es": "Manual de instalación de Faikout"
           }
         },
         {
           "url": "https://github.com/prohand/gladys-faikout/blob/main/docs/en.md",
           "label": {
             "en": "Integration documentation",
-            "fr": "Documentation de l'intégration"
+            "fr": "Documentation de l'intégration",
+            "de": "Dokumentation der Integration",
+            "es": "Documentación de la integración"
           }
         }
       ]
@@ -53,15 +65,21 @@
       "type": "string",
       "label": {
         "en": "Faikout units",
-        "fr": "Unités Faikout"
+        "fr": "Unités Faikout",
+        "de": "Faikout-Geräte",
+        "es": "Unidades Faikout"
       },
       "description": {
         "en": "The address of each unit, separated by commas. Prefer a fixed IP address: names ending in .local are often not resolved inside the integration. Put a name and = in front to name the device, e.g. Living room=192.168.1.50.",
-        "fr": "L'adresse de chaque unité, séparées par des virgules. Préférez une adresse IP fixe : les noms en .local ne sont souvent pas résolus dans l'intégration. Mettez un nom et = devant pour nommer l'appareil, par exemple Salon=192.168.1.50."
+        "fr": "L'adresse de chaque unité, séparées par des virgules. Préférez une adresse IP fixe : les noms en .local ne sont souvent pas résolus dans l'intégration. Mettez un nom et = devant pour nommer l'appareil, par exemple Salon=192.168.1.50.",
+        "de": "Die Adresse jedes Geräts, durch Kommas getrennt. Verwende lieber eine feste IP-Adresse: Namen auf .local werden in der Integration oft nicht aufgelöst. Setze einen Namen und = davor, um das Gerät zu benennen, z. B. Wohnzimmer=192.168.1.50.",
+        "es": "La dirección de cada unidad, separadas por comas. Es preferible una dirección IP fija: los nombres terminados en .local a menudo no se resuelven dentro de la integración. Ponga un nombre y = delante para nombrar el dispositivo, p. ej. Salón=192.168.1.50."
       },
       "placeholder": {
         "en": "Living room=192.168.1.50, Bedroom=192.168.1.51",
-        "fr": "Salon=192.168.1.50, Chambre=192.168.1.51"
+        "fr": "Salon=192.168.1.50, Chambre=192.168.1.51",
+        "de": "Wohnzimmer=192.168.1.50, Schlafzimmer=192.168.1.51",
+        "es": "Salón=192.168.1.50, Dormitorio=192.168.1.51"
       },
       "required": false,
       "default": ""
@@ -71,11 +89,15 @@
       "type": "secret",
       "label": {
         "en": "Web password",
-        "fr": "Mot de passe web"
+        "fr": "Mot de passe web",
+        "de": "Web-Passwort",
+        "es": "Contraseña web"
       },
       "description": {
         "en": "Only if a web password is set in the Faikout settings: the same one for every unit. Leave empty otherwise. The settings password is not needed.",
-        "fr": "Seulement si un mot de passe web est défini dans les réglages du Faikout : le même pour toutes les unités. Laissez vide sinon. Le mot de passe des réglages n'est pas utile."
+        "fr": "Seulement si un mot de passe web est défini dans les réglages du Faikout : le même pour toutes les unités. Laissez vide sinon. Le mot de passe des réglages n'est pas utile.",
+        "de": "Nur wenn in den Faikout-Einstellungen ein Web-Passwort festgelegt ist: dasselbe für alle Geräte. Sonst leer lassen. Das Passwort der Einstellungen wird nicht benötigt.",
+        "es": "Solo si hay una contraseña web definida en los ajustes del Faikout: la misma para todas las unidades. En caso contrario, déjelo vacío. La contraseña de los ajustes no es necesaria."
       },
       "required": false
     },
@@ -84,11 +106,15 @@
       "type": "number",
       "label": {
         "en": "Refresh interval (s)",
-        "fr": "Intervalle de rafraîchissement (s)"
+        "fr": "Intervalle de rafraîchissement (s)",
+        "de": "Aktualisierungsintervall (s)",
+        "es": "Intervalo de actualización (s)"
       },
       "description": {
         "en": "How often each unit is read, in seconds. A change made with the remote control shows up in Gladys after at most this delay.",
-        "fr": "Fréquence de lecture de chaque unité, en secondes. Un changement fait à la télécommande apparaît dans Gladys au plus tard après ce délai."
+        "fr": "Fréquence de lecture de chaque unité, en secondes. Un changement fait à la télécommande apparaît dans Gladys au plus tard après ce délai.",
+        "de": "Wie oft jedes Gerät gelesen wird, in Sekunden. Eine mit der Fernbedienung vorgenommene Änderung erscheint spätestens nach dieser Zeit in Gladys.",
+        "es": "Frecuencia de lectura de cada unidad, en segundos. Un cambio hecho con el mando a distancia aparece en Gladys como máximo tras este plazo."
       },
       "required": false,
       "default": 30,
@@ -101,7 +127,9 @@
       "key": "test_connection",
       "label": {
         "en": "Test the connection",
-        "fr": "Tester la connexion"
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
       },
       "timeout_seconds": 30
     }
@@ -111,11 +139,15 @@
       "key": "link_changed",
       "label": {
         "en": "An air conditioner goes offline or comes back",
-        "fr": "Une climatisation se déconnecte ou revient"
+        "fr": "Une climatisation se déconnecte ou revient",
+        "de": "Ein Klimagerät geht offline oder ist wieder da",
+        "es": "Un aire acondicionado se desconecta o vuelve"
       },
       "description": {
         "en": "The Faikout stops answering, or the air conditioner behind it does, and when it answers again.",
-        "fr": "Le Faikout ne répond plus, ou la climatisation derrière lui, puis quand il répond de nouveau."
+        "fr": "Le Faikout ne répond plus, ou la climatisation derrière lui, puis quand il répond de nouveau.",
+        "de": "Der Faikout antwortet nicht mehr, oder das Klimagerät dahinter, und wenn er wieder antwortet.",
+        "es": "El Faikout deja de responder, o el aire acondicionado detrás de él, y cuando vuelve a responder."
       },
       "fields": [
         {
@@ -124,7 +156,9 @@
           "source": "devices",
           "label": {
             "en": "Air conditioner",
-            "fr": "Climatisation"
+            "fr": "Climatisation",
+            "de": "Klimagerät",
+            "es": "Aire acondicionado"
           }
         },
         {
@@ -132,21 +166,27 @@
           "type": "multi_select",
           "label": {
             "en": "Becomes",
-            "fr": "Devient"
+            "fr": "Devient",
+            "de": "Wird",
+            "es": "Pasa a"
           },
           "options": [
             {
               "value": "offline",
               "label": {
                 "en": "Offline",
-                "fr": "Hors ligne"
+                "fr": "Hors ligne",
+                "de": "Offline",
+                "es": "Desconectado"
               }
             },
             {
               "value": "online",
               "label": {
                 "en": "Online",
-                "fr": "En ligne"
+                "fr": "En ligne",
+                "de": "Online",
+                "es": "En línea"
               }
             }
           ]
@@ -158,7 +198,9 @@
           "type": "string",
           "label": {
             "en": "New state",
-            "fr": "Nouvel état"
+            "fr": "Nouvel état",
+            "de": "Neuer Zustand",
+            "es": "Nuevo estado"
           }
         },
         {
@@ -166,7 +208,9 @@
           "type": "string",
           "label": {
             "en": "Reason (unreachable, aircon)",
-            "fr": "Raison (unreachable, aircon)"
+            "fr": "Raison (unreachable, aircon)",
+            "de": "Grund (unreachable, aircon)",
+            "es": "Motivo (unreachable, aircon)"
           }
         }
       ]
@@ -175,11 +219,15 @@
       "key": "changed_outside",
       "label": {
         "en": "An air conditioner is changed outside Gladys",
-        "fr": "Une climatisation est modifiée hors de Gladys"
+        "fr": "Une climatisation est modifiée hors de Gladys",
+        "de": "Ein Klimagerät wird außerhalb von Gladys geändert",
+        "es": "Un aire acondicionado se cambia fuera de Gladys"
       },
       "description": {
         "en": "Power, mode, set point or fan changed with the remote control, the Faikout page or a timer.",
-        "fr": "Marche, mode, consigne ou ventilation changés à la télécommande, sur la page Faikout ou par un minuteur."
+        "fr": "Marche, mode, consigne ou ventilation changés à la télécommande, sur la page Faikout ou par un minuteur.",
+        "de": "Ein/Aus, Modus, Sollwert oder Lüfter mit der Fernbedienung, der Faikout-Seite oder einem Timer geändert.",
+        "es": "Encendido, modo, consigna o ventilador cambiados con el mando, la página de Faikout o un temporizador."
       },
       "fields": [
         {
@@ -188,7 +236,9 @@
           "source": "devices",
           "label": {
             "en": "Air conditioner",
-            "fr": "Climatisation"
+            "fr": "Climatisation",
+            "de": "Klimagerät",
+            "es": "Aire acondicionado"
           }
         },
         {
@@ -196,35 +246,45 @@
           "type": "multi_select",
           "label": {
             "en": "What changed",
-            "fr": "Ce qui a changé"
+            "fr": "Ce qui a changé",
+            "de": "Was sich geändert hat",
+            "es": "Qué ha cambiado"
           },
           "options": [
             {
               "value": "power",
               "label": {
                 "en": "Power",
-                "fr": "Marche / arrêt"
+                "fr": "Marche / arrêt",
+                "de": "Ein/Aus",
+                "es": "Encendido/apagado"
               }
             },
             {
               "value": "mode",
               "label": {
                 "en": "Mode",
-                "fr": "Mode"
+                "fr": "Mode",
+                "de": "Modus",
+                "es": "Modo"
               }
             },
             {
               "value": "temp",
               "label": {
                 "en": "Set point",
-                "fr": "Consigne"
+                "fr": "Consigne",
+                "de": "Sollwert",
+                "es": "Consigna"
               }
             },
             {
               "value": "fan",
               "label": {
                 "en": "Fan speed",
-                "fr": "Vitesse de ventilation"
+                "fr": "Vitesse de ventilation",
+                "de": "Lüftergeschwindigkeit",
+                "es": "Velocidad del ventilador"
               }
             }
           ]
@@ -236,7 +296,9 @@
           "type": "string",
           "label": {
             "en": "What changed",
-            "fr": "Ce qui a changé"
+            "fr": "Ce qui a changé",
+            "de": "Was sich geändert hat",
+            "es": "Qué ha cambiado"
           }
         },
         {
@@ -244,7 +306,9 @@
           "type": "boolean",
           "label": {
             "en": "Powered on",
-            "fr": "Allumée"
+            "fr": "Allumée",
+            "de": "Eingeschaltet",
+            "es": "Encendido"
           }
         },
         {
@@ -252,7 +316,9 @@
           "type": "string",
           "label": {
             "en": "Mode (auto, cool, heat, dry, fan)",
-            "fr": "Mode (auto, cool, heat, dry, fan)"
+            "fr": "Mode (auto, cool, heat, dry, fan)",
+            "de": "Modus (auto, cool, heat, dry, fan)",
+            "es": "Modo (auto, cool, heat, dry, fan)"
           }
         },
         {
@@ -260,7 +326,9 @@
           "type": "number",
           "label": {
             "en": "Set point (°C)",
-            "fr": "Consigne (°C)"
+            "fr": "Consigne (°C)",
+            "de": "Sollwert (°C)",
+            "es": "Consigna (°C)"
           }
         },
         {
@@ -268,7 +336,9 @@
           "type": "string",
           "label": {
             "en": "Fan speed",
-            "fr": "Vitesse de ventilation"
+            "fr": "Vitesse de ventilation",
+            "de": "Lüftergeschwindigkeit",
+            "es": "Velocidad del ventilador"
           }
         }
       ]
@@ -277,11 +347,15 @@
       "key": "defrost_changed",
       "label": {
         "en": "An air conditioner starts or ends defrosting",
-        "fr": "Une climatisation commence ou finit un dégivrage"
+        "fr": "Une climatisation commence ou finit un dégivrage",
+        "de": "Ein Klimagerät beginnt oder beendet das Abtauen",
+        "es": "Un aire acondicionado empieza o termina un desescarche"
       },
       "description": {
         "en": "While heating in the cold, the outdoor unit stops heating for a few minutes to melt its frost.",
-        "fr": "En chauffage par temps froid, l'unité extérieure arrête de chauffer quelques minutes pour fondre son givre."
+        "fr": "En chauffage par temps froid, l'unité extérieure arrête de chauffer quelques minutes pour fondre son givre.",
+        "de": "Beim Heizen bei Kälte hört das Außengerät für einige Minuten auf zu heizen, um sein Eis abzutauen.",
+        "es": "Al calentar con frío, la unidad exterior deja de calentar unos minutos para fundir su escarcha."
       },
       "fields": [
         {
@@ -290,7 +364,9 @@
           "source": "devices",
           "label": {
             "en": "Air conditioner",
-            "fr": "Climatisation"
+            "fr": "Climatisation",
+            "de": "Klimagerät",
+            "es": "Aire acondicionado"
           }
         },
         {
@@ -298,21 +374,27 @@
           "type": "multi_select",
           "label": {
             "en": "Defrost",
-            "fr": "Dégivrage"
+            "fr": "Dégivrage",
+            "de": "Abtauen",
+            "es": "Desescarche"
           },
           "options": [
             {
               "value": "started",
               "label": {
                 "en": "Started",
-                "fr": "Commencé"
+                "fr": "Commencé",
+                "de": "Begonnen",
+                "es": "Iniciado"
               }
             },
             {
               "value": "ended",
               "label": {
                 "en": "Ended",
-                "fr": "Terminé"
+                "fr": "Terminé",
+                "de": "Beendet",
+                "es": "Terminado"
               }
             }
           ]
@@ -324,7 +406,9 @@
           "type": "string",
           "label": {
             "en": "Defrost",
-            "fr": "Dégivrage"
+            "fr": "Dégivrage",
+            "de": "Abtauen",
+            "es": "Desescarche"
           }
         }
       ]
@@ -335,11 +419,15 @@
       "key": "set_climate",
       "label": {
         "en": "Set an air conditioner",
-        "fr": "Régler une climatisation"
+        "fr": "Régler une climatisation",
+        "de": "Ein Klimagerät einstellen",
+        "es": "Ajustar un aire acondicionado"
       },
       "description": {
         "en": "Power, mode, set point and fan speed in one go. Leave a field empty to keep its value.",
-        "fr": "Marche, mode, consigne et ventilation en une fois. Laissez un champ vide pour garder sa valeur."
+        "fr": "Marche, mode, consigne et ventilation en une fois. Laissez un champ vide pour garder sa valeur.",
+        "de": "Ein/Aus, Modus, Sollwert und Lüftergeschwindigkeit auf einmal. Lass ein Feld leer, um seinen Wert zu behalten.",
+        "es": "Encendido, modo, consigna y velocidad del ventilador de una vez. Deje un campo vacío para conservar su valor."
       },
       "timeout_seconds": 20,
       "fields": [
@@ -349,7 +437,9 @@
           "source": "devices",
           "label": {
             "en": "Air conditioner",
-            "fr": "Climatisation"
+            "fr": "Climatisation",
+            "de": "Klimagerät",
+            "es": "Aire acondicionado"
           },
           "required": true
         },
@@ -358,7 +448,9 @@
           "type": "select",
           "label": {
             "en": "Power",
-            "fr": "Marche / arrêt"
+            "fr": "Marche / arrêt",
+            "de": "Ein/Aus",
+            "es": "Encendido/apagado"
           },
           "required": false,
           "options": [
@@ -366,14 +458,18 @@
               "value": "on",
               "label": {
                 "en": "On",
-                "fr": "Allumer"
+                "fr": "Allumer",
+                "de": "Einschalten",
+                "es": "Encender"
               }
             },
             {
               "value": "off",
               "label": {
                 "en": "Off",
-                "fr": "Éteindre"
+                "fr": "Éteindre",
+                "de": "Ausschalten",
+                "es": "Apagar"
               }
             }
           ]
@@ -383,7 +479,9 @@
           "type": "select",
           "label": {
             "en": "Mode",
-            "fr": "Mode"
+            "fr": "Mode",
+            "de": "Modus",
+            "es": "Modo"
           },
           "required": false,
           "options": [
@@ -391,35 +489,45 @@
               "value": "auto",
               "label": {
                 "en": "Auto",
-                "fr": "Auto"
+                "fr": "Auto",
+                "de": "Auto",
+                "es": "Auto"
               }
             },
             {
               "value": "cool",
               "label": {
                 "en": "Cooling",
-                "fr": "Froid"
+                "fr": "Froid",
+                "de": "Kühlen",
+                "es": "Frío"
               }
             },
             {
               "value": "heat",
               "label": {
                 "en": "Heating",
-                "fr": "Chauffage"
+                "fr": "Chauffage",
+                "de": "Heizen",
+                "es": "Calor"
               }
             },
             {
               "value": "dry",
               "label": {
                 "en": "Dry",
-                "fr": "Déshumidification"
+                "fr": "Déshumidification",
+                "de": "Entfeuchten",
+                "es": "Deshumidificación"
               }
             },
             {
               "value": "fan",
               "label": {
                 "en": "Fan only",
-                "fr": "Ventilation"
+                "fr": "Ventilation",
+                "de": "Nur Lüften",
+                "es": "Solo ventilación"
               }
             }
           ]
@@ -429,7 +537,9 @@
           "type": "number",
           "label": {
             "en": "Set point (°C)",
-            "fr": "Consigne (°C)"
+            "fr": "Consigne (°C)",
+            "de": "Sollwert (°C)",
+            "es": "Consigna (°C)"
           },
           "required": false,
           "min": 10,
@@ -440,7 +550,9 @@
           "type": "select",
           "label": {
             "en": "Fan speed",
-            "fr": "Vitesse de ventilation"
+            "fr": "Vitesse de ventilation",
+            "de": "Lüftergeschwindigkeit",
+            "es": "Velocidad del ventilador"
           },
           "required": false,
           "options": [
@@ -448,49 +560,63 @@
               "value": "auto",
               "label": {
                 "en": "Auto",
-                "fr": "Auto"
+                "fr": "Auto",
+                "de": "Auto",
+                "es": "Auto"
               }
             },
             {
               "value": "quiet",
               "label": {
                 "en": "Quiet",
-                "fr": "Silencieux"
+                "fr": "Silencieux",
+                "de": "Leise",
+                "es": "Silencioso"
               }
             },
             {
               "value": "1",
               "label": {
                 "en": "Speed 1",
-                "fr": "Vitesse 1"
+                "fr": "Vitesse 1",
+                "de": "Stufe 1",
+                "es": "Velocidad 1"
               }
             },
             {
               "value": "2",
               "label": {
                 "en": "Speed 2",
-                "fr": "Vitesse 2"
+                "fr": "Vitesse 2",
+                "de": "Stufe 2",
+                "es": "Velocidad 2"
               }
             },
             {
               "value": "3",
               "label": {
                 "en": "Speed 3",
-                "fr": "Vitesse 3"
+                "fr": "Vitesse 3",
+                "de": "Stufe 3",
+                "es": "Velocidad 3"
               }
             },
             {
               "value": "4",
               "label": {
                 "en": "Speed 4",
-                "fr": "Vitesse 4"
+                "fr": "Vitesse 4",
+                "de": "Stufe 4",
+                "es": "Velocidad 4"
               }
             },
             {
               "value": "5",
               "label": {
                 "en": "Speed 5",
-                "fr": "Vitesse 5"
+                "fr": "Vitesse 5",
+                "de": "Stufe 5",
+                "es": "Velocidad 5"
               }
             }
           ]
@@ -502,7 +628,9 @@
           "type": "boolean",
           "label": {
             "en": "Online",
-            "fr": "En ligne"
+            "fr": "En ligne",
+            "de": "Online",
+            "es": "En línea"
           }
         },
         {
@@ -510,7 +638,9 @@
           "type": "boolean",
           "label": {
             "en": "Powered on",
-            "fr": "Allumée"
+            "fr": "Allumée",
+            "de": "Eingeschaltet",
+            "es": "Encendido"
           }
         },
         {
@@ -518,7 +648,9 @@
           "type": "string",
           "label": {
             "en": "Mode",
-            "fr": "Mode"
+            "fr": "Mode",
+            "de": "Modus",
+            "es": "Modo"
           }
         },
         {
@@ -526,7 +658,9 @@
           "type": "number",
           "label": {
             "en": "Set point (°C)",
-            "fr": "Consigne (°C)"
+            "fr": "Consigne (°C)",
+            "de": "Sollwert (°C)",
+            "es": "Consigna (°C)"
           }
         },
         {
@@ -534,7 +668,9 @@
           "type": "number",
           "label": {
             "en": "Room temperature (°C)",
-            "fr": "Température de la pièce (°C)"
+            "fr": "Température de la pièce (°C)",
+            "de": "Raumtemperatur (°C)",
+            "es": "Temperatura de la habitación (°C)"
           }
         },
         {
@@ -542,7 +678,9 @@
           "type": "number",
           "label": {
             "en": "Outside temperature (°C)",
-            "fr": "Température extérieure (°C)"
+            "fr": "Température extérieure (°C)",
+            "de": "Außentemperatur (°C)",
+            "es": "Temperatura exterior (°C)"
           }
         },
         {
@@ -550,7 +688,9 @@
           "type": "number",
           "label": {
             "en": "Humidity (%)",
-            "fr": "Humidité (%)"
+            "fr": "Humidité (%)",
+            "de": "Luftfeuchtigkeit (%)",
+            "es": "Humedad (%)"
           }
         }
       ]
@@ -559,11 +699,15 @@
       "key": "set_faikout_auto",
       "label": {
         "en": "Set Faikout auto",
-        "fr": "Régler le Faikout auto"
+        "fr": "Régler le Faikout auto",
+        "de": "Faikout auto einstellen",
+        "es": "Ajustar Faikout auto"
       },
       "description": {
         "en": "The Faikout heats or cools by itself to keep the room within target ± range. A range of 0 stops it.",
-        "fr": "Le Faikout chauffe ou refroidit seul pour garder la pièce dans cible ± marge. Une marge de 0 l'arrête."
+        "fr": "Le Faikout chauffe ou refroidit seul pour garder la pièce dans cible ± marge. Une marge de 0 l'arrête.",
+        "de": "Der Faikout heizt oder kühlt selbst, um den Raum bei Ziel ± Spanne zu halten. Eine Spanne von 0 stoppt ihn.",
+        "es": "El Faikout calienta o enfría por sí solo para mantener la habitación en objetivo ± margen. Un margen de 0 lo detiene."
       },
       "timeout_seconds": 20,
       "fields": [
@@ -573,7 +717,9 @@
           "source": "devices",
           "label": {
             "en": "Air conditioner",
-            "fr": "Climatisation"
+            "fr": "Climatisation",
+            "de": "Klimagerät",
+            "es": "Aire acondicionado"
           },
           "required": true
         },
@@ -582,7 +728,9 @@
           "type": "number",
           "label": {
             "en": "Target (°C)",
-            "fr": "Cible (°C)"
+            "fr": "Cible (°C)",
+            "de": "Ziel (°C)",
+            "es": "Objetivo (°C)"
           },
           "required": true,
           "min": 10,
@@ -593,11 +741,15 @@
           "type": "number",
           "label": {
             "en": "Range (°C)",
-            "fr": "Marge (°C)"
+            "fr": "Marge (°C)",
+            "de": "Spanne (°C)",
+            "es": "Margen (°C)"
           },
           "description": {
             "en": "Allowed gap on each side of the target. 0 stops Faikout auto.",
-            "fr": "Écart permis de chaque côté de la cible. 0 arrête le Faikout auto."
+            "fr": "Écart permis de chaque côté de la cible. 0 arrête le Faikout auto.",
+            "de": "Erlaubte Abweichung auf jeder Seite des Ziels. 0 stoppt Faikout auto.",
+            "es": "Desviación permitida a cada lado del objetivo. 0 detiene Faikout auto."
           },
           "required": false,
           "default": 1,
@@ -611,7 +763,9 @@
           "type": "boolean",
           "label": {
             "en": "Faikout auto on",
-            "fr": "Faikout auto actif"
+            "fr": "Faikout auto actif",
+            "de": "Faikout auto aktiv",
+            "es": "Faikout auto activo"
           }
         }
       ]
@@ -620,11 +774,15 @@
       "key": "read_status",
       "label": {
         "en": "Read an air conditioner",
-        "fr": "Lire une climatisation"
+        "fr": "Lire une climatisation",
+        "de": "Ein Klimagerät lesen",
+        "es": "Leer un aire acondicionado"
       },
       "description": {
         "en": "A fresh reading for the next actions: temperatures, mode, power. Never fails: check Online.",
-        "fr": "Une lecture fraîche pour les actions suivantes : températures, mode, marche. N'échoue jamais : vérifiez En ligne."
+        "fr": "Une lecture fraîche pour les actions suivantes : températures, mode, marche. N'échoue jamais : vérifiez En ligne.",
+        "de": "Ein frischer Messwert für die nächsten Aktionen: Temperaturen, Modus, Ein/Aus. Schlägt nie fehl: prüfe Online.",
+        "es": "Una lectura reciente para las siguientes acciones: temperaturas, modo, encendido. Nunca falla: compruebe En línea."
       },
       "timeout_seconds": 15,
       "fields": [
@@ -634,7 +792,9 @@
           "source": "devices",
           "label": {
             "en": "Air conditioner",
-            "fr": "Climatisation"
+            "fr": "Climatisation",
+            "de": "Klimagerät",
+            "es": "Aire acondicionado"
           },
           "required": true
         }
@@ -645,7 +805,9 @@
           "type": "boolean",
           "label": {
             "en": "Online",
-            "fr": "En ligne"
+            "fr": "En ligne",
+            "de": "Online",
+            "es": "En línea"
           }
         },
         {
@@ -653,7 +815,9 @@
           "type": "boolean",
           "label": {
             "en": "Powered on",
-            "fr": "Allumée"
+            "fr": "Allumée",
+            "de": "Eingeschaltet",
+            "es": "Encendido"
           }
         },
         {
@@ -661,7 +825,9 @@
           "type": "string",
           "label": {
             "en": "Mode",
-            "fr": "Mode"
+            "fr": "Mode",
+            "de": "Modus",
+            "es": "Modo"
           }
         },
         {
@@ -669,7 +835,9 @@
           "type": "number",
           "label": {
             "en": "Set point (°C)",
-            "fr": "Consigne (°C)"
+            "fr": "Consigne (°C)",
+            "de": "Sollwert (°C)",
+            "es": "Consigna (°C)"
           }
         },
         {
@@ -677,7 +845,9 @@
           "type": "number",
           "label": {
             "en": "Room temperature (°C)",
-            "fr": "Température de la pièce (°C)"
+            "fr": "Température de la pièce (°C)",
+            "de": "Raumtemperatur (°C)",
+            "es": "Temperatura de la habitación (°C)"
           }
         },
         {
@@ -685,7 +855,9 @@
           "type": "number",
           "label": {
             "en": "Outside temperature (°C)",
-            "fr": "Température extérieure (°C)"
+            "fr": "Température extérieure (°C)",
+            "de": "Außentemperatur (°C)",
+            "es": "Temperatura exterior (°C)"
           }
         },
         {
@@ -693,7 +865,9 @@
           "type": "number",
           "label": {
             "en": "Humidity (%)",
-            "fr": "Humidité (%)"
+            "fr": "Humidité (%)",
+            "de": "Luftfeuchtigkeit (%)",
+            "es": "Humedad (%)"
           }
         }
       ]
@@ -704,11 +878,15 @@
       "key": "unit",
       "label": {
         "en": "Faikout air conditioner",
-        "fr": "Climatisation Faikout"
+        "fr": "Climatisation Faikout",
+        "de": "Faikout-Klimagerät",
+        "es": "Aire acondicionado Faikout"
       },
       "description": {
         "en": "Temperatures, 24 h chart, mode, fan, flaps, comfort modes, On/Off.",
-        "fr": "Températures, courbe 24 h, mode, ventilation, volets, modes confort, Marche/Arrêt."
+        "fr": "Températures, courbe 24 h, mode, ventilation, volets, modes confort, Marche/Arrêt.",
+        "de": "Temperaturen, 24-h-Kurve, Modus, Lüfter, Lamellen, Komfortmodi, Ein/Aus.",
+        "es": "Temperaturas, curva de 24 h, modo, ventilador, lamas, modos de confort, Encendido/Apagado."
       },
       "icon": "wind",
       "settings": [
@@ -718,7 +896,9 @@
           "source": "devices",
           "label": {
             "en": "Air conditioner",
-            "fr": "Climatisation"
+            "fr": "Climatisation",
+            "de": "Klimagerät",
+            "es": "Aire acondicionado"
           },
           "required": true
         }
@@ -729,11 +909,15 @@
       "key": "overview",
       "label": {
         "en": "Faikout overview",
-        "fr": "Vue d'ensemble Faikout"
+        "fr": "Vue d'ensemble Faikout",
+        "de": "Faikout-Übersicht",
+        "es": "Vista general Faikout"
       },
       "description": {
         "en": "Every air conditioner at a glance: link, mode and room temperature.",
-        "fr": "Toutes les climatisations d'un coup d'œil : liaison, mode et température."
+        "fr": "Toutes les climatisations d'un coup d'œil : liaison, mode et température.",
+        "de": "Alle Klimageräte auf einen Blick: Verbindung, Modus und Raumtemperatur.",
+        "es": "Todos los aires acondicionados de un vistazo: conexión, modo y temperatura."
       },
       "icon": "grid",
       "action_timeout_seconds": 30

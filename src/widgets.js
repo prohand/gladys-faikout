@@ -19,6 +19,7 @@ import {
   LINK_LABELS,
   MODE_LABELS,
   OFF,
+  everywhere,
   formatTemperature,
   translate,
 } from './labels.js';
@@ -39,11 +40,31 @@ const LINK_COLORS = {
 // Live tiles, in order of interest. A widget holds 8 components: 4 tiles, the
 // temperature chart, the status rows and 2 buttons.
 const TILES = [
-  { key: 'home', label: { en: 'Room', fr: 'Pièce' }, icon: 'thermometer' },
-  { key: 'temp', label: { en: 'Set point', fr: 'Consigne' }, icon: 'target' },
-  { key: 'outside', label: { en: 'Outside', fr: 'Extérieur' }, icon: 'sun' },
-  { key: 'consumption', label: { en: 'Power', fr: 'Puissance' }, icon: 'zap' },
-  { key: 'hum', label: { en: 'Humidity', fr: 'Humidité' }, icon: 'droplet' },
+  {
+    key: 'home',
+    label: { en: 'Room', fr: 'Pièce', de: 'Raum', es: 'Habitación' },
+    icon: 'thermometer',
+  },
+  {
+    key: 'temp',
+    label: { en: 'Set point', fr: 'Consigne', de: 'Sollwert', es: 'Consigna' },
+    icon: 'target',
+  },
+  {
+    key: 'outside',
+    label: { en: 'Outside', fr: 'Extérieur', de: 'Außen', es: 'Exterior' },
+    icon: 'sun',
+  },
+  {
+    key: 'consumption',
+    label: { en: 'Power', fr: 'Puissance', de: 'Leistung', es: 'Potencia' },
+    icon: 'zap',
+  },
+  {
+    key: 'hum',
+    label: { en: 'Humidity', fr: 'Humidité', de: 'Feuchte', es: 'Humedad' },
+    icon: 'droplet',
+  },
 ];
 const MAX_TILES = 4;
 
@@ -53,42 +74,55 @@ const CHART_FEATURES = ['home', 'temp', 'outside'];
 // Comfort options, in the order of the Faikout page. Short names: they share
 // one status row (value ≤ 40 characters).
 const COMFORT_LABELS = {
-  econo: { en: 'Econo', fr: 'Éco' },
-  powerful: { en: 'Powerful', fr: 'Puissant' },
-  comfort: { en: 'Comfort', fr: 'Confort' },
-  quiet: { en: 'Quiet', fr: 'Silence' },
-  streamer: { en: 'Streamer', fr: 'Streamer' },
+  econo: { en: 'Econo', fr: 'Éco', de: 'Eco', es: 'Eco' },
+  powerful: { en: 'Powerful', fr: 'Puissant', de: 'Powerful', es: 'Potente' },
+  comfort: { en: 'Comfort', fr: 'Confort', de: 'Komfort', es: 'Confort' },
+  quiet: { en: 'Quiet', fr: 'Silence', de: 'Leise', es: 'Silencio' },
+  streamer: { en: 'Streamer', fr: 'Streamer', de: 'Streamer', es: 'Streamer' },
 };
 
 function modeText(status) {
   if (status?.power === false) {
     return OFF;
   }
-  return MODE_LABELS[status?.mode] ?? { en: '–', fr: '–' };
+  return MODE_LABELS[status?.mode] ?? everywhere('–');
 }
 
 function stateRow(unit) {
-  const row = { label: { en: 'State', fr: 'État' }, icon: 'circle' };
+  const row = { label: { en: 'State', fr: 'État', de: 'Zustand', es: 'Estado' }, icon: 'circle' };
   if (unit.link !== LINK.ONLINE || !unit.status) {
     return { ...row, value: LINK_LABELS[unit.link], color: LINK_COLORS[unit.link] };
   }
   return unit.status.power
-    ? { ...row, value: { en: 'Running', fr: 'En marche' }, color: WIDGET_COLORS.SUCCESS }
-    : { ...row, value: { en: 'Off', fr: 'Arrêtée' }, color: WIDGET_COLORS.NEUTRAL };
+    ? {
+        ...row,
+        value: {
+          en: 'Running',
+          fr: 'En marche',
+          de: 'In Betrieb',
+          es: 'En marcha',
+        },
+        color: WIDGET_COLORS.SUCCESS,
+      }
+    : {
+        ...row,
+        value: { en: 'Off', fr: 'Arrêtée', de: 'Aus', es: 'Apagado' },
+        color: WIDGET_COLORS.NEUTRAL,
+      };
 }
 
 function swingText(status) {
   const { swingh, swingv } = status;
   if (swingh && swingv) {
-    return { en: 'Both ways', fr: 'Les deux' };
+    return { en: 'Both ways', fr: 'Les deux', de: 'Beide', es: 'Ambas' };
   }
   if (swingv) {
-    return { en: 'Vertical', fr: 'Verticaux' };
+    return { en: 'Vertical', fr: 'Verticaux', de: 'Vertikal', es: 'Verticales' };
   }
   if (swingh) {
-    return { en: 'Horizontal', fr: 'Horizontaux' };
+    return { en: 'Horizontal', fr: 'Horizontaux', de: 'Horizontal', es: 'Horizontales' };
   }
-  return { en: 'Fixed', fr: 'Fixes' };
+  return { en: 'Fixed', fr: 'Fixes', de: 'Fest', es: 'Fijas' };
 }
 
 function statusRows(unit, units) {
@@ -100,7 +134,7 @@ function statusRows(unit, units) {
   const active = status.power ? WIDGET_COLORS.PRIMARY : WIDGET_COLORS.NEUTRAL;
   if (MODE_LABELS[status.mode]) {
     rows.push({
-      label: { en: 'Mode', fr: 'Mode' },
+      label: { en: 'Mode', fr: 'Mode', de: 'Modus', es: 'Modo' },
       icon: 'sliders',
       value: MODE_LABELS[status.mode],
       color: active,
@@ -108,7 +142,7 @@ function statusRows(unit, units) {
   }
   if (FAN_LABELS[status.fan]) {
     rows.push({
-      label: { en: 'Fan', fr: 'Ventilation' },
+      label: { en: 'Fan', fr: 'Ventilation', de: 'Lüfter', es: 'Ventilador' },
       icon: 'wind',
       value: FAN_LABELS[status.fan],
       color: active,
@@ -116,7 +150,7 @@ function statusRows(unit, units) {
   }
   if (typeof status.swingh === 'boolean' || typeof status.swingv === 'boolean') {
     rows.push({
-      label: { en: 'Flaps', fr: 'Volets' },
+      label: { en: 'Flaps', fr: 'Volets', de: 'Lamellen', es: 'Lamas' },
       icon: 'move',
       value: swingText(status),
       color: status.swingh || status.swingv ? active : WIDGET_COLORS.NEUTRAL,
@@ -126,7 +160,12 @@ function statusRows(unit, units) {
   if (comfortKeys.length > 0) {
     const on = comfortKeys.filter((key) => status[key] === true);
     rows.push({
-      label: { en: 'Comfort modes', fr: 'Modes confort' },
+      label: {
+        en: 'Comfort modes',
+        fr: 'Modes confort',
+        de: 'Komfortmodi',
+        es: 'Modos de confort',
+      },
       icon: 'star',
       value:
         on.length > 0
@@ -136,13 +175,13 @@ function statusRows(unit, units) {
                 .join(', ')
                 .slice(0, 40),
             )
-          : { en: 'None', fr: 'Aucun' },
+          : { en: 'None', fr: 'Aucun', de: 'Keine', es: 'Ninguno' },
       color: on.length > 0 ? active : WIDGET_COLORS.NEUTRAL,
     });
   }
   if (typeof status.autor === 'number' && status.autor > 0) {
     rows.push({
-      label: { en: 'Faikout auto', fr: 'Faikout auto' },
+      label: everywhere('Faikout auto'),
       icon: 'crosshair',
       value: `${formatTemperature(status.autot, units)} ± ${status.autor}`,
       color: WIDGET_COLORS.PRIMARY,
@@ -150,9 +189,9 @@ function statusRows(unit, units) {
   }
   if (status.antifreeze) {
     rows.push({
-      label: { en: 'Defrost', fr: 'Dégivrage' },
+      label: { en: 'Defrost', fr: 'Dégivrage', de: 'Abtauen', es: 'Desescarche' },
       icon: 'cloud-snow',
-      value: { en: 'In progress', fr: 'En cours' },
+      value: { en: 'In progress', fr: 'En cours', de: 'Läuft', es: 'En curso' },
       color: WIDGET_COLORS.WARNING,
     });
   }
@@ -182,13 +221,13 @@ function overviewRow(manager, unit, units) {
 
 const refreshButton = (params) => ({
   type: 'button',
-  label: { en: 'Refresh', fr: 'Actualiser' },
+  label: { en: 'Refresh', fr: 'Actualiser', de: 'Aktualisieren', es: 'Actualizar' },
   icon: 'refresh-cw',
   style: 'secondary',
   action: { key: REFRESH_ACTION, ...(params ? { params } : {}) },
 });
 
-const REFRESHED = { en: 'Refreshed', fr: 'Actualisé' };
+const REFRESHED = { en: 'Refreshed', fr: 'Actualisé', de: 'Aktualisiert', es: 'Actualizado' };
 
 export const WIDGETS = {
   [UNIT_WIDGET]: {
@@ -203,6 +242,8 @@ export const WIDGETS = {
               text: {
                 en: 'Pick a Faikout air conditioner in the widget settings.',
                 fr: 'Choisissez une climatisation Faikout dans les réglages du widget.',
+                de: 'Wähle in den Widget-Einstellungen ein Faikout-Klimagerät.',
+                es: 'Elija un aire acondicionado Faikout en la configuración del widget.',
               },
             },
           ],
@@ -222,7 +263,12 @@ export const WIDGETS = {
       if (curves.length > 0) {
         components.push({
           type: 'chart',
-          title: { en: 'Temperatures, 24 h', fr: 'Températures, 24 h' },
+          title: {
+            en: 'Temperatures, 24 h',
+            fr: 'Températures, 24 h',
+            de: 'Temperaturen, 24 h',
+            es: 'Temperaturas, 24 h',
+          },
           chart_type: 'line',
           device_features: curves.map((key) => ids.feature(key)),
           interval: 'last-day',
@@ -236,7 +282,9 @@ export const WIDGETS = {
         const on = unit.status?.power === true;
         components.push({
           type: 'button',
-          label: on ? { en: 'Off', fr: 'Éteindre' } : { en: 'On', fr: 'Allumer' },
+          label: on
+            ? { en: 'Off', fr: 'Éteindre', de: 'Ausschalten', es: 'Apagar' }
+            : { en: 'On', fr: 'Allumer', de: 'Einschalten', es: 'Encender' },
           icon: 'power',
           style: on ? 'secondary' : 'primary',
           device_feature: ids.feature('power'),
@@ -274,6 +322,8 @@ export const WIDGETS = {
               text: {
                 en: 'No Faikout unit configured yet: add them in the integration configuration.',
                 fr: "Aucune unité Faikout configurée : ajoutez-les dans la configuration de l'intégration.",
+                de: 'Noch kein Faikout-Gerät konfiguriert: Füge sie in der Konfiguration der Integration hinzu.',
+                es: 'Aún no hay ninguna unidad Faikout configurada: añádalas en la configuración de la integración.',
               },
             },
           ],
@@ -290,7 +340,12 @@ export const WIDGETS = {
         components.push({
           type: 'text',
           variant: 'caption',
-          text: { en: `And ${more} more`, fr: `Et ${more} de plus` },
+          text: {
+            en: `And ${more} more`,
+            fr: `Et ${more} de plus`,
+            de: `Und ${more} weitere`,
+            es: `Y ${more} más`,
+          },
         });
       }
       components.push(refreshButton());

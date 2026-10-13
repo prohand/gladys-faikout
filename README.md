@@ -10,7 +10,7 @@ Built on the official
 and the SDK
 [`@gladysassistant/integration-sdk`](https://github.com/GladysAssistant/integration-sdk-js).
 
-User documentation: [English](./docs/en.md) · [Français](./docs/fr.md).
+User documentation: [English](./docs/en.md) · [Français](./docs/fr.md) · [Deutsch](./docs/de.md) · [Español](./docs/es.md).
 
 ## What it does
 
@@ -49,7 +49,7 @@ are sent at once and checked against the status the unit answers with.
 │  ├─ app.js                         # SDK handlers -> unit manager
 │  ├─ config.js                      # defaults + parser of the "Faikout units" field
 │  ├─ connection.js                  # connection status + "Test the connection"
-│  ├─ labels.js                      # bilingual words
+│  ├─ labels.js                      # words in en/fr/de/es
 │  ├─ scenes.js                      # scene actions
 │  ├─ widgets.js                     # dashboard widgets
 │  └─ faikout/
@@ -58,7 +58,7 @@ are sent at once and checked against the status the unit answers with.
 │     ├─ protocol.js                 # Faikout fields <-> Gladys features
 │     └─ store.js                    # what is remembered in /data
 ├─ test/                             # node --test, fake Gladys + fake Faikout units
-├─ docs/en.md, docs/fr.md            # user documentation (mandatory for the store)
+├─ docs/{en,fr,de,es}.md             # user documentation (en and fr mandatory for the store)
 ├─ gladys-assistant-integration.json # manifest
 ├─ .github/workflows/ci.yml          # format, lint, tests (Node 22/24), store checks, Docker build
 ├─ .github/workflows/build.yml       # multi-arch image (amd64 + arm64) to ghcr.io

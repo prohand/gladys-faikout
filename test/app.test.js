@@ -299,7 +299,7 @@ test('Test the connection says what answered', async () => {
   try {
     const ack = await gladys.fake.action('test_connection');
     assert.equal(ack.success, true);
-    const { en, fr } = ack.data.message;
+    const { en, fr, de, es } = ack.data.message;
     assert.match(
       en,
       /✓ Salon \(10\.0\.0\.5\): OK \(FTXM25R, protocol S21\) — Heating, room 21\.5 °C/,
@@ -307,6 +307,10 @@ test('Test the connection says what answered', async () => {
     assert.match(en, /✗ 10\.0\.0\.6 \(10\.0\.0\.6\): no answer/);
     assert.match(en, /Ignored, not an address: n o/);
     assert.match(fr, /Chauffage, pièce 21\.5 °C/);
+    assert.match(de, /Heizen, Raum 21\.5 °C/);
+    assert.match(es, /Calor, habitación 21\.5 °C/);
+    assert.match(de, /Ignoriert, keine Adresse: n o/);
+    assert.match(es, /Ignorado, no es una dirección: n o/);
   } finally {
     await close();
   }
@@ -324,6 +328,9 @@ test('a web password: told when missing, used once typed, at once', async () => 
     const ack = await gladys.fake.action('test_connection');
     assert.match(ack.data.message.en, /✗ Salon \(10\.0\.0\.5\): web password missing or wrong/);
     assert.match(ack.data.message.fr, /mot de passe web absent ou faux/);
+    assert.match(ack.data.message.de, /Web-Passwort fehlt oder ist falsch/);
+    assert.match(ack.data.message.es, /falta la contraseña web o es incorrecta/);
+    assert.ok(gladys.fake.connectionStatus.message.de && gladys.fake.connectionStatus.message.es);
 
     await gladys.fake.configUpdated({
       units: 'Salon=10.0.0.5',
