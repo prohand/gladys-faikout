@@ -37,10 +37,11 @@ Gladys parle au module comme sa propre page web : il faut garder les
 
 Dans **Intégrations → Faikout → Configuration** :
 
-| Champ                              | Rôle                                                                                                                                                                           |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Unités Faikout**                 | L'adresse de chaque module, séparées par des virgules. Un nom suivi de `=` devant l'adresse donne son nom à l'appareil.                                                        |
-| **Intervalle de rafraîchissement** | Toutes les combien de secondes chaque climatisation est lue (30 s par défaut, de 5 à 600). Un réglage fait à la télécommande apparaît dans Gladys au plus tard après ce délai. |
+| Champ                              | Rôle                                                                                                                                                                             |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Unités Faikout**                 | L'adresse de chaque module, séparées par des virgules. Un nom suivi de `=` devant l'adresse donne son nom à l'appareil.                                                          |
+| **Mot de passe web**               | Seulement si un **mot de passe web** est défini dans les réglages du Faikout (le même pour toutes les unités). Laissez vide sinon. Le mot de passe des réglages n'est pas utile. |
+| **Intervalle de rafraîchissement** | Toutes les combien de secondes chaque climatisation est lue (30 s par défaut, de 5 à 600). Un réglage fait à la télécommande apparaît dans Gladys au plus tard après ce délai.   |
 
 Exemple :
 
@@ -52,6 +53,10 @@ Salon=192.168.1.50, Chambre=192.168.1.51, 192.168.1.52
 - Un nom en `.local` (par exemple `guestac.local`) n'est souvent **pas résolu**
   depuis le conteneur de l'intégration : préférez l'adresse IP.
 - Un port autre que 80 s'écrit `192.168.1.50:8080`.
+- Avec un **mot de passe web**, Gladys l'envoie comme la page du Faikout une
+  fois connecté (un cookie, en clair sur votre réseau, comme le signalent les
+  réglages du Faikout). Le mot de passe des réglages reste inconnu de Gladys :
+  il n'en a jamais besoin.
 
 Cliquez ensuite sur **Tester la connexion** : pour chaque unité, le message dit
 si elle répond, son modèle, son protocole (S21, X50A…), son mode et la
@@ -114,6 +119,9 @@ Pour une simple commande (allumer, changer la consigne), l'action standard
   `http://<adresse>/` depuis un ordinateur du même réseau que Gladys. Si la
   page ne s'ouvre pas, le souci est le réseau (adresse, Wi-Fi, VLAN), pas
   Gladys.
+- **« mot de passe web absent ou faux »** : un mot de passe web est défini sur
+  le Faikout. Tapez le même dans **Mot de passe web** (copiez-le depuis les
+  réglages du Faikout).
 - **Une commande échoue avec « did not apply »** : la climatisation n'a pas
   cette fonction, ou le Faikout ne peut pas la piloter.
 - **Le Faikout auto ne s'applique pas** : le Faikout est piloté par un
@@ -125,7 +133,8 @@ Pour une simple commande (allumer, changer la consigne), l'action standard
 ## Confidentialité
 
 Tout reste sur votre réseau : l'intégration ne parle qu'aux adresses que vous
-lui donnez, en HTTP et WebSocket locaux. Elle garde seulement, dans son volume
+lui donnez, en HTTP et WebSocket locaux. Le mot de passe web, s'il y en a un, est gardé
+par Gladys avec la configuration et envoyé seulement aux unités. Elle garde seulement, dans son volume
 `/data`, l'adresse MAC, le nom, le modèle et la liste des fonctions de chaque
 unité, pour retrouver ses appareils même si une climatisation est éteinte au
 démarrage.

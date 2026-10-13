@@ -19,6 +19,7 @@
 
 import { createLogger, DEVICE_TRANSPORTS } from '@gladysassistant/integration-sdk';
 import { parseUnits } from '../config.js';
+import { LoginRequiredError } from './client.js';
 import {
   FAN_NAMES,
   FEATURES,
@@ -68,7 +69,7 @@ export class UnitManager {
   /**
    * @param {import('@gladysassistant/integration-sdk').GladysIntegration} gladys
    * @param {object} options
-   * @param {(host: string) => import('./client.js').FaikoutClient} options.clientFactory
+   * @param {(host: string, options: { password: string }) => import('./client.js').FaikoutClient} options.clientFactory
    * @param {{ load(): object, save(units: object): void }} options.store
    * @param {string[]} [options.widgetKeys] widgets nudged when their content changes
    * @param {() => number} [options.now]
@@ -84,6 +85,7 @@ export class UnitManager {
     this.units = new Map();
     this.invalid = [];
     this.pollFrequency = 30;
+    this.password = '';
   }
 
   /**
@@ -94,10 +96,17 @@ export class UnitManager {
     const { units, invalid } = parseUnits(config.units);
     this.invalid = invalid;
     this.pollFrequency = config.poll_frequency;
+    const passwordChanged = (config.password ?? '') !== this.password;
+    this.password = config.password ?? '';
     const next = new Map();
     for (const { host, label } of units) {
       const unit = this.units.get(host) ?? this.#createUnit(host);
       unit.label = label;
+      if (passwordChanged && this.units.has(host)) {
+        // An open socket keeps working with the old cookie: start over.
+        unit.client.close();
+        unit.client = this.#createClient(host);
+      }
       next.set(host, unit);
     }
     for (const [host, unit] of this.units) {
@@ -121,14 +130,20 @@ export class UnitManager {
       name: remembered.name ?? null,
       model: remembered.model ?? null,
       capabilities: new Set(remembered.capabilities ?? []),
-      client: this.clientFactory(host),
+      client: this.#createClient(host),
       status: null,
       link: LINK.UNKNOWN,
       lastSeen: null,
       lastError: null,
+      // The unit wants a web password and refuses the configured one.
+      loginRequired: false,
       // Feature key -> time Gladys last set it.
       commands: new Map(),
     };
+  }
+
+  #createClient(host) {
+    return this.clientFactory(host, { password: this.password });
   }
 
   #markAll() {
@@ -280,6 +295,7 @@ export class UnitManager {
         logger.warn(`${this.displayName(unit)} (${unit.host}) does not answer: ${err.message}`);
       }
       unit.lastError = err.message;
+      unit.loginRequired = err instanceof LoginRequiredError;
       this.#setLink(unit, LINK.UNREACHABLE);
       if (frame) {
         throw new Error(`${this.displayName(unit)} does not answer: ${err.message}`, {
@@ -333,6 +349,7 @@ export class UnitManager {
     unit.status = status;
     unit.lastSeen = this.now();
     unit.lastError = null;
+    unit.loginRequired = false;
 
     let learned = false;
     for (const key of capabilitiesOf(status)) {

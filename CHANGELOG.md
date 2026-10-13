@@ -15,6 +15,7 @@ All notable changes to this integration are documented here. The format follows
 - Scene actions: set an air conditioner (power, mode, set point, fan in one go), set Faikout auto, read an air conditioner.
 - Dashboard widgets: one air conditioner, and an overview of all of them.
 - "Test the connection" button in the Configuration screen.
+- "Web password" field, for units protected by a Faikout web password; the connection test says when it is missing or wrong.
 - `SECURITY.md`, `CHANGELOG.md` and `CLAUDE.md`.
 
 [Unreleased]: https://github.com/prohand/gladys-faikout/commits/main

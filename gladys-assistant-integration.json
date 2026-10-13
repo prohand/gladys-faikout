@@ -52,6 +52,16 @@
       "default": ""
     },
     {
+      "key": "password",
+      "type": "secret",
+      "label": { "en": "Web password", "fr": "Mot de passe web" },
+      "description": {
+        "en": "Only if a web password is set in the Faikout settings: the same one for every unit. Leave empty otherwise. The settings password is not needed.",
+        "fr": "Seulement si un mot de passe web est défini dans les réglages du Faikout : le même pour toutes les unités. Laissez vide sinon. Le mot de passe des réglages n'est pas utile."
+      },
+      "required": false
+    },
+    {
       "key": "poll_frequency",
       "type": "number",
       "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },

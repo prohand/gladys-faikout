@@ -22,6 +22,15 @@ export function connectionSummary(manager) {
     return { connected: false, message: NO_UNIT };
   }
   const answering = units.filter((unit) => unit.link !== LINK.UNREACHABLE);
+  if (answering.length === 0 && units.some((unit) => unit.loginRequired)) {
+    return {
+      connected: false,
+      message: {
+        en: 'The Faikout asks for a web password: fill in the "Web password" field, or check it.',
+        fr: 'Le Faikout demande un mot de passe web : remplissez le champ « Mot de passe web », ou vérifiez-le.',
+      },
+    };
+  }
   if (answering.length === 0) {
     return {
       connected: false,
@@ -37,6 +46,12 @@ export function connectionSummary(manager) {
 function unitLine(manager, unit) {
   const name = `${manager.displayName(unit)} (${unit.host})`;
   const status = unit.status;
+  if (unit.link === LINK.UNREACHABLE && unit.loginRequired) {
+    return {
+      en: `✗ ${name}: web password missing or wrong. Fill in the "Web password" field with the one set in the Faikout settings.`,
+      fr: `✗ ${name} : mot de passe web absent ou faux. Remplissez le champ « Mot de passe web » avec celui défini dans les réglages du Faikout.`,
+    };
+  }
   if (unit.link === LINK.UNREACHABLE || !status) {
     const reason = unit.lastError ?? '?';
     return {

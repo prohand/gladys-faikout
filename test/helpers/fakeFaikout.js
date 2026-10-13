@@ -4,6 +4,8 @@
 // Each unit answers like the firmware: every WebSocket frame on `/status` gets
 // one status answer, a JSON frame first applies the controls it carries (the
 // ones the unit has, and does not refuse), `/common/basic_info` gives the MAC.
+// With a web password, both want the `Faikout=<password>` cookie: the
+// handshake is dropped, the page answers the script that sends to `/login`.
 // -----------------------------------------------------------------------------
 
 import { FaikoutClient } from '../../src/faikout/client.js';
@@ -50,6 +52,13 @@ export class FakeUnit {
     this.refuse = new Set();
     // Every frame received, in order ('' for a read).
     this.frames = [];
+    // Web password of the unit, '' for none.
+    this.password = '';
+  }
+
+  /** Whether a request carrying these headers gets past the web password. */
+  accepts(headers = {}) {
+    return !this.password || headers.Cookie === `Faikout=${this.password}`;
   }
 
   apply(frame) {
@@ -67,15 +76,16 @@ export function createFakeNetwork() {
   const sockets = new Set();
 
   class FakeWebSocket {
-    constructor(url) {
+    constructor(url, options = {}) {
       this.url = url;
+      this.headers = options.headers ?? {};
       this.listeners = {};
       this.host = new URL(url).host;
       this.closed = false;
       sockets.add(this);
       setImmediate(() => {
         const unit = units.get(this.host);
-        if (unit?.reachable) {
+        if (unit?.reachable && unit.accepts(this.headers)) {
           this.emit('open', {});
         } else {
           this.emit('error', {});
@@ -124,7 +134,7 @@ export function createFakeNetwork() {
     }
   }
 
-  async function fakeFetch(url) {
+  async function fakeFetch(url, options = {}) {
     const { host, pathname } = new URL(url);
     const unit = units.get(host);
     if (!unit || unit.reachable !== true) {
@@ -132,6 +142,14 @@ export function createFakeNetwork() {
     }
     if (pathname !== '/common/basic_info') {
       return { ok: false, status: 404, text: async () => '' };
+    }
+    if (!unit.accepts(options.headers)) {
+      return {
+        ok: true,
+        status: 200,
+        text: async () =>
+          '<html><head><script>document.location="/login";</script></head><body><a href="/login">Login required</a></body></html>',
+      };
     }
     return {
       ok: true,
@@ -150,7 +168,12 @@ export function createFakeNetwork() {
       units.set(host, unit);
       return unit;
     },
-    clientFactory: (host) =>
-      new FaikoutClient(host, { WebSocket: FakeWebSocket, fetch: fakeFetch, timeoutMs: 100 }),
+    clientFactory: (host, options = {}) =>
+      new FaikoutClient(host, {
+        ...options,
+        WebSocket: FakeWebSocket,
+        fetch: fakeFetch,
+        timeoutMs: 100,
+      }),
   };
 }

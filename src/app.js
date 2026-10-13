@@ -20,12 +20,13 @@ const logger = createLogger({ name: 'app' });
  * Register every handler on `gladys`. Call it before `gladys.connect()`.
  * @param {import('@gladysassistant/integration-sdk').GladysIntegration} gladys
  * @param {object} [options]
- * @param {(host: string) => FaikoutClient} [options.clientFactory] (tests)
+ * @param {(host: string, options: { password: string }) => FaikoutClient} [options.clientFactory] (tests)
  * @param {{ load(): object, save(units: object): void }} [options.store] (tests)
  */
 export function createApp(gladys, options = {}) {
   const manager = new UnitManager(gladys, {
-    clientFactory: options.clientFactory ?? ((host) => new FaikoutClient(host)),
+    clientFactory:
+      options.clientFactory ?? ((host, clientOptions) => new FaikoutClient(host, clientOptions)),
     store: options.store ?? createUnitStore(process.env.FAIKOUT_DATA_DIR || DEFAULT_DATA_DIR),
     widgetKeys: Object.keys(WIDGETS),
   });

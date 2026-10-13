@@ -10,6 +10,8 @@
 export const DEFAULT_CONFIG = {
   // The Faikout units, as typed by the user: "Living room=192.168.1.50, ...".
   units: '',
+  // Web password set on the units (Faikout settings), '' when there is none.
+  password: '',
   // Seconds between two reads of every unit.
   poll_frequency: 30,
 };
@@ -83,6 +85,9 @@ export function normalizeConfig(raw = {}) {
     ...DEFAULT_CONFIG,
     ...raw,
     units: typeof raw.units === 'string' ? raw.units : DEFAULT_CONFIG.units,
+    // Pasted passwords often carry a stray space or new line, and a header
+    // value cannot hold a new line.
+    password: typeof raw.password === 'string' ? raw.password.trim() : DEFAULT_CONFIG.password,
     poll_frequency: Number.isFinite(pollFrequency)
       ? Math.min(POLL_FREQUENCY_MAX, Math.max(POLL_FREQUENCY_MIN, pollFrequency))
       : DEFAULT_CONFIG.poll_frequency,

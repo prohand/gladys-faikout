@@ -90,6 +90,12 @@ test('config_schema defaults and bounds match the code', () => {
       assert.ok(!(field.key in DEFAULT_CONFIG));
       continue;
     }
+    if (field.type === 'secret') {
+      // The store refuses a default on a secret: the code falls back to ''.
+      assert.equal(field.default, undefined);
+      assert.equal(DEFAULT_CONFIG[field.key], '', `default of ${field.key}`);
+      continue;
+    }
     assert.equal(DEFAULT_CONFIG[field.key], field.default, `default of ${field.key}`);
   }
   const poll = manifest.config_schema.find((f) => f.key === 'poll_frequency');
