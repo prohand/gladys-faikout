@@ -240,6 +240,7 @@ export class UnitManager {
             read_only: feature.read_only,
             has_feedback: feature.has_feedback,
             keep_history: feature.keep_history,
+            ...(feature.supported_options ? { supported_options: feature.supported_options } : {}),
           }),
         ),
       };

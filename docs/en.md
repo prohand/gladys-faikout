@@ -9,7 +9,7 @@ In Gladys, each air conditioner becomes a device with:
 
 - **power**, **mode** (auto, cooling, heating, dry, fan only), **set point**
   and **fan speed**;
-- horizontal and vertical **swing**, and the **Econo**, **Powerful**,
+- horizontal and vertical **swing** (on or off: no fixed position), and the **Econo**, **Powerful**,
   **Comfort**, **Streamer** and **quiet outdoor unit** modes, when your unit
   has them;
 - the readings: **room temperature**, **outside temperature**, **inlet** and

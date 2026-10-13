@@ -16,6 +16,7 @@ All notable changes to this integration are documented here. The format follows
 - Dashboard widgets: one air conditioner (room, set point, outside and power tiles, 24 h temperature chart, state, mode, fan, flaps and comfort modes), and an overview of all of them.
 - "Test the connection" button in the Configuration screen.
 - "Web password" field, for units protected by a Faikout web password; the connection test says when it is missing or wrong.
+- Horizontal and vertical swing offer only Off and Swing in Gladys: Faikout flaps have no fixed positions.
 - `SECURITY.md`, `CHANGELOG.md` and `CLAUDE.md`.
 
 [Unreleased]: https://github.com/prohand/gladys-faikout/commits/main

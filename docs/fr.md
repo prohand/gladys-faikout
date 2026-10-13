@@ -9,7 +9,7 @@ Dans Gladys, chaque climatisation devient un appareil avec :
 
 - **marche / arrêt**, **mode** (auto, froid, chauffage, déshumidification,
   ventilation), **consigne** et **vitesse de ventilation** ;
-- **balayage** horizontal et vertical, et les modes **Econo**, **Powerful**,
+- **balayage** horizontal et vertical (marche ou arrêt : pas de position fixe), et les modes **Econo**, **Powerful**,
   **Comfort**, **Streamer**, **unité extérieure silencieuse**, quand votre
   climatisation les a ;
 - les mesures : **température de la pièce**, **température extérieure**,
