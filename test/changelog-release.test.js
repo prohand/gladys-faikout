@@ -32,3 +32,21 @@ test('the repository changelog has an Unreleased section and its link', async ()
   assert.match(text, /^## \[Unreleased\]$/m);
   assert.match(text, /^\[Unreleased\]: https:\/\/github\.com\/prohand\/gladys-faikout\//m);
 });
+
+test('a mention of the heading in the intro text is not the section', () => {
+  // gladys-xbox 1.0.1 wrote its release section inside an intro quoting the heading.
+  const before =
+    '# Changelog\n\nDescribe each change under `## [Unreleased]` as you make it.\n\n' +
+    `## [Unreleased]\n\n### Added\n\n- Something new.\n\n[Unreleased]: ${REPO}/commits/main\n`;
+  const after = rollChangelog(before, '1.0.0', '2026-10-13');
+  assert.match(
+    after,
+    /under `## \[Unreleased\]` as you make it\.\n\n## \[Unreleased\]\n\n## \[1\.0\.0\]/,
+  );
+  assert.match(after, /## \[1\.0\.0\] - 2026-10-13\n\n### Added\n\n- Something new\./);
+});
+
+test('a version only mentioned in the text is still released', () => {
+  const before = `## [Unreleased]\n\n- Prepares \`## [2.0.0]\` docs.\n\n[Unreleased]: ${REPO}/commits/main\n`;
+  assert.match(rollChangelog(before, '2.0.0', '2026-10-13'), /^## \[2\.0\.0\] - 2026-10-13$/m);
+});
