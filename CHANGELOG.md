@@ -6,6 +6,8 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-25
+
 ### Added
 
 - Store search keywords (Faikin, RevK, ESP32, the S21 / X50A Daikin protocols, "heat pump"…), so
@@ -52,7 +54,8 @@ All notable changes to this integration are documented here. The format follows
 - Energy meter (kWh index) of the units that report it, for Gladys energy monitoring: 30-minute consumption and cost.
 - `SECURITY.md`, `CHANGELOG.md` and `CLAUDE.md`.
 
-[Unreleased]: https://github.com/prohand/gladys-faikout/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/prohand/gladys-faikout/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/prohand/gladys-faikout/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/prohand/gladys-faikout/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/prohand/gladys-faikout/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/prohand/gladys-faikout/compare/v1.0.1...v1.0.2
