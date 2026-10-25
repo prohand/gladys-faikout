@@ -66,6 +66,59 @@ test('scene triggers, scene actions and widgets require Gladys >= 5.1.0', () => 
   assert.ok(major > 5 || (major === 5 && minor >= 1), manifest.gladys_version);
 });
 
+// The store's catalog vocabulary (Gladys 5.3 added transport, vehicles,
+// servers and leisure). An unknown key is only dropped by the indexer, with a
+// warning: the integration would silently lose its shelf.
+const CATALOG_CATEGORIES = [
+  'climate',
+  'lighting',
+  'energy',
+  'security',
+  'multimedia',
+  'appliances',
+  'environment',
+  'protocols',
+  'network',
+  'notifications',
+  'assistants',
+  'services',
+  'transport',
+  'vehicles',
+  'servers',
+  'leisure',
+];
+
+test('the integration requires Gladys >= 5.3.0 (keywords)', () => {
+  // `keywords` (like `countries` and `music`) is a 5.3 field: an older core
+  // rejects the whole manifest over it.
+  const [major, minor] = minGladysVersion();
+  assert.ok(major > 5 || (major === 5 && minor >= 3), manifest.gladys_version);
+  assert.deepEqual(minGladysVersion(), [5, 3, 0]);
+});
+
+test('the catalog categories are 1 to 3 unique keys of the store vocabulary', () => {
+  assert.ok(manifest.categories.length >= 1 && manifest.categories.length <= 3);
+  assert.equal(new Set(manifest.categories).size, manifest.categories.length);
+  for (const category of manifest.categories) {
+    assert.ok(CATALOG_CATEGORIES.includes(category), `unknown category "${category}"`);
+  }
+});
+
+test('the search keywords are 1 to 10 unique strings of 2 to 30 characters', () => {
+  assert.ok(Array.isArray(manifest.keywords));
+  assert.ok(manifest.keywords.length >= 1 && manifest.keywords.length <= 10);
+  const normalized = manifest.keywords.map((keyword) => keyword.trim().toLowerCase());
+  assert.equal(new Set(normalized).size, normalized.length, 'keywords must be unique');
+  for (const keyword of normalized) {
+    assert.ok(keyword.length >= 2 && keyword.length <= 30, `keyword "${keyword}": 2-30 chars`);
+  }
+});
+
+test('no countries: a Faikout module works wherever Daikin units are sold', () => {
+  // `countries` hides an integration from the catalog of every other country.
+  assert.equal(manifest.countries, undefined);
+});
+
 test('the integration is declared local only: Faikout has no cloud', () => {
   assert.deepEqual(manifest.transports, ['local']);
   assert.ok(manifest.categories.includes('climate'));

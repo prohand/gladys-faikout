@@ -20,6 +20,9 @@ Funktion, die deinem Modell fehlt, erscheint nicht.
 
 ## Bevor du beginnst
 
+Diese Integration erfordert **Gladys 5.3.0 oder neuer**: Der Store bietet sie
+einer älteren Instanz nicht an.
+
 1. Baue das Faikout-Modul in das Klimagerät ein (siehe die
    [Faikout-Installationsanleitung](https://codeberg.org/RevK/ESP32-Faikout/src/branch/main/Manuals/Setup.md)).
 2. Verbinde es mit deinem WLAN: Beim ersten Start öffnet es einen eigenen

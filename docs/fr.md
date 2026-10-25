@@ -21,6 +21,9 @@ fonction absente de votre modèle n'apparaît pas.
 
 ## Avant de commencer
 
+Cette intégration nécessite **Gladys 5.3.0 ou plus récent** : le store ne la
+propose pas à une instance plus ancienne.
+
 1. Installez le module Faikout dans la climatisation (voir le
    [manuel d'installation Faikout](https://codeberg.org/RevK/ESP32-Faikout/src/branch/main/Manuals/Setup.md)).
 2. Connectez-le à votre Wi-Fi : au premier démarrage il crée son propre point

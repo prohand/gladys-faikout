@@ -20,6 +20,9 @@ function your model lacks does not show up.
 
 ## Before you start
 
+This integration requires **Gladys 5.3.0 or newer**: the store does not offer
+it to an older instance.
+
 1. Fit the Faikout module in the air conditioner (see the
    [Faikout setup manual](https://codeberg.org/RevK/ESP32-Faikout/src/branch/main/Manuals/Setup.md)).
 2. Join it to your Wi-Fi: on first start it opens its own access point, with a

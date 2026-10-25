@@ -10,7 +10,8 @@ dependency: `@gladysassistant/integration-sdk`) for **Faikout** modules
 ([faikin.au](https://www.faikin.au), firmware on
 [Codeberg](https://codeberg.org/RevK/ESP32-Faikout)): ESP32 boards that replace the Wi-Fi
 module of Daikin air conditioners and are driven on the LAN. Local only, no cloud
-(`"transports": ["local"]`). Gladys 5.1+ for the scene triggers, scene actions and widgets.
+(`"transports": ["local"]`). Gladys 5.3+: 5.1 for the scene triggers, scene actions and
+widgets, 5.3 for the store search `keywords` (no `countries`: not a regional integration).
 
 Started from the official
 [JavaScript template](https://github.com/GladysAssistant/integration-template-js); CI and
@@ -91,7 +92,8 @@ test/helpers/fakeFaikout.js fake units, fake WebSocket and fetch: no network in 
 
 `test/manifest.test.js` ties `gladys-assistant-integration.json` to the code: defaults,
 handlers for every action / scene action / widget, every trigger declared and fired, event
-data keys declared, texts in en/fr/de/es, version and image tag in lockstep.
+data keys declared, texts in en/fr/de/es, version and image tag in lockstep, the catalog
+categories and search keywords within the store rules, the `>=5.3.0` floor, no `countries`.
 
 ## Conventions
 
