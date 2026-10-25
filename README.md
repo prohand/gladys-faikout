@@ -10,6 +10,9 @@ Built on the official
 and the SDK
 [`@gladysassistant/integration-sdk`](https://github.com/GladysAssistant/integration-sdk-js).
 
+Requires **Gladys 5.3.0 or later** (store search `keywords`; the scene and widget
+declarations need 5.1).
+
 User documentation: [English](./docs/en.md) · [Français](./docs/fr.md) · [Deutsch](./docs/de.md) · [Español](./docs/es.md).
 
 ## What it does

@@ -19,7 +19,8 @@ import {
 } from '@gladysassistant/integration-sdk';
 
 // Gladys values of the air-conditioning features (AC_MODE and AC_FAN_SPEED in
-// server/utils/constants.js of the Gladys repository).
+// server/utils/constants.js of the Gladys repository). The SDK exports the
+// categories, types and units used below, not these value enums (0.16).
 export const AC_MODE = { AUTO: 0, COOLING: 1, HEATING: 2, DRYING: 3, FAN: 4 };
 export const AC_FAN_SPEED = {
   AUTO: 0,

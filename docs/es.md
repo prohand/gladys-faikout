@@ -20,6 +20,9 @@ función que su modelo no tiene no aparece.
 
 ## Antes de empezar
 
+Esta integración requiere **Gladys 5.3.0 o posterior**: el store no la ofrece
+a una instancia más antigua.
+
 1. Instale el módulo Faikout en el aire acondicionado (consulte el
    [manual de instalación de Faikout](https://codeberg.org/RevK/ESP32-Faikout/src/branch/main/Manuals/Setup.md)).
 2. Conéctelo a su Wi-Fi: en el primer arranque abre su propio punto de acceso,

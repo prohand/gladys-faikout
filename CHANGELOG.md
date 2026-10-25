@@ -6,6 +6,16 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Store search keywords (Faikin, RevK, ESP32, the S21 / X50A Daikin protocols, "heat pump"…), so
+  the integration is found by what users type.
+
+### Changed
+
+- Gladys 5.3.0 or later is now required (the store search keywords need it).
+- `@gladysassistant/integration-sdk` updated to 0.16.0.
+
 ## [1.1.1] - 2026-10-23
 
 - Maintenance release, no functional change.
